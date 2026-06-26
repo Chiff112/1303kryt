@@ -7,15 +7,16 @@ import InfoTile from '../ui/InfoTile.vue'
 /**
  * DeliverySection — "Доставка и оплата".
  *
- * Green→yellow gradient panel:
- *   Left column:
- *     - Зона доставки      : map + 3 colored zone markers loaded from JSON
- *     - Варианты оплаты    : 3 payment options (InfoTile)
- *     - Способы доставки   : 2 delivery options (InfoTile)
- *   Right column:
- *     - Delivery boy holding boxes
- *     - White speech bubble "БЫСТРО И БЕСПЛАТНО!" (same cloud asset
- *       as the products section, reused via a CSS class flip)
+ * Matches the Figma frame:
+ *   - Green→yellow gradient panel (`bg-delivery.png`).
+ *   - Left column: "Зона доставки" (zone legend + map),
+ *     "Варианты оплаты" (3 InfoTiles), "Способы доставки" (2 InfoTiles).
+ *   - Right column: delivery boy holding boxes, flush to the bottom.
+ *   - A self-contained speech bubble (cloud + "Быстро и бесплатно!"
+ *     baked into one PNG, tilted ~45°) sits upper-left of the boy,
+ *     its tail pointing down-right toward his face.
+ *
+ * Data comes from /data/content.json.
  */
 
 const { data } = useContent()
@@ -33,7 +34,6 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
       <div class="delivery__panel">
         <!-- ============ LEFT: info ============ -->
         <div class="delivery__info">
-          <!-- Zones + map -->
           <h3 class="delivery__heading">Зона доставки</h3>
           <ul class="delivery__zones">
             <li v-for="zone in zones" :key="zone.id" class="delivery__zone">
@@ -45,7 +45,6 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
             <img src="/images/map.png" alt="Карта доставки" />
           </div>
 
-          <!-- Payment options -->
           <h3 class="delivery__heading">Варианты оплаты</h3>
           <div class="delivery__options delivery__options--3">
             <InfoTile
@@ -57,7 +56,6 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
             />
           </div>
 
-          <!-- Delivery options -->
           <h3 class="delivery__heading">Способы доставки</h3>
           <div class="delivery__options delivery__options--2">
             <InfoTile
@@ -77,10 +75,12 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
             alt="Курьер с коробками заказа"
             class="delivery__hero-img"
           />
-          <div class="delivery__bubble" aria-hidden="true">
-            <img src="/images/cloud.png" alt="" class="delivery__bubble-cloud" />
-            <img src="/images/phrase-delivery.png" alt="Быстро и бесплатно!" class="delivery__bubble-text" />
-          </div>
+          <!-- Complete bubble (cloud + phrase, ~45° tilt baked in) -->
+          <img
+            src="/images/bubble-delivery.png"
+            alt="Быстро и бесплатно!"
+            class="delivery__bubble"
+          />
         </div>
       </div>
     </div>
@@ -126,7 +126,6 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 }
 .delivery__heading:first-child { margin-top: 0; }
 
-/* Zone legend */
 .delivery__zones {
   display: flex;
   flex-wrap: wrap;
@@ -136,7 +135,7 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 }
 .delivery__zone {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   font-size: 11px;
   color: var(--color-text);
@@ -148,10 +147,10 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   height: 14px;
   border-radius: 50%;
   flex: 0 0 auto;
+  margin-top: 1px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-/* Map */
 .delivery__map {
   border-radius: var(--radius-sm);
   overflow: hidden;
@@ -163,7 +162,6 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   display: block;
 }
 
-/* Option rows */
 .delivery__options {
   display: grid;
   gap: 18px;
@@ -181,35 +179,22 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 }
 .delivery__hero-img {
   max-width: 100%;
-  max-height: 580px;
+  max-height: 600px;
   object-fit: contain;
-  margin-bottom: -32px; /* lets the boy "sit" on the panel's bottom edge */
+  object-position: center bottom;
+  margin-bottom: -32px; /* boy sits on the panel's bottom edge */
 }
 
-/* Speech bubble — re-uses the same cloud asset as the products section
-   but flipped the OTHER way so the tail points to the boy's face */
+/* ----- Speech bubble (one self-contained image, ~45° tilt baked in) ----- */
 .delivery__bubble {
   position: absolute;
-  top: 4%;
-  left: -8%;
-  width: clamp(150px, 20vw, 230px);
   z-index: 3;
+  top: 2%;
+  left: -2%;
+  width: clamp(170px, 24vw, 280px);
+  height: auto;
   pointer-events: none;
-}
-.delivery__bubble-cloud {
-  display: block;
-  width: 100%;
-  height: auto;
-  /* No scaleX — keep the cloud's natural tail pointing right toward the boy */
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-}
-.delivery__bubble-text {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 70%;
-  height: auto;
-  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
 /* ========================================================
@@ -221,12 +206,12 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
     gap: 24px;
     padding: 24px;
   }
-  .delivery__hero        { min-height: 360px; order: -1; }
-  .delivery__hero-img    { max-height: 360px; margin-bottom: -24px; }
+  .delivery__hero        { min-height: 380px; order: -1; }
+  .delivery__hero-img    { max-height: 380px; margin-bottom: -24px; }
   .delivery__bubble {
-    top: 4%;
+    top: 0;
     left: 2%;
-    width: clamp(130px, 28vw, 200px);
+    width: clamp(150px, 32vw, 240px);
   }
 }
 
@@ -235,6 +220,10 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   .delivery__options--3 { grid-template-columns: 1fr; gap: 12px; }
   .delivery__options--2 { grid-template-columns: 1fr; gap: 12px; }
   .delivery__zones      { gap: 6px 14px; }
-  .delivery__hero-img   { max-height: 280px; }
+  .delivery__hero-img   { max-height: 300px; }
+  .delivery__bubble {
+    width: 160px;
+    left: 0;
+  }
 }
 </style>

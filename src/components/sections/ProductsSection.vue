@@ -7,13 +7,16 @@ import CategoryCircle from '../ui/CategoryCircle.vue'
 /**
  * ProductsSection — "Наша продукция".
  *
- * Layout:
- *   - White outer band with the section title.
+ * Matches the Figma frame:
  *   - Rounded green panel (`bg-products.png`).
- *   - Left: the girl drinking a smoothie standing in front of a green
- *     semicircle backdrop, with a white speech bubble whose tail points
- *     at her mouth so she appears to be saying the phrase.
- *   - Right: 4×2 grid of category circles (data-driven from JSON).
+ *   - The girl sits flush against the LEFT edge of the panel, standing
+ *     in front of a soft green semicircle backdrop.
+ *   - A self-contained speech bubble (cloud + text baked into one PNG)
+ *     floats to the right of her head, tilted slightly (< 45°), its
+ *     tail pointing left-down toward her mouth.
+ *   - 4×2 grid of category circles fills the right side.
+ *
+ * Categories come from /data/content.json.
  */
 
 const { data } = useContent()
@@ -40,10 +43,12 @@ const categories = computed(() => data.value?.categories ?? [])
             class="products__girl-img"
           />
 
-          <div class="products__bubble" aria-hidden="true">
-            <img src="/images/cloud.png" alt="" class="products__bubble-cloud" />
-            <img src="/images/phrase.png" alt="" class="products__bubble-text" />
-          </div>
+          <!-- Complete bubble (cloud + phrase in one image) -->
+          <img
+            src="/images/bubble-products.png"
+            alt="Полезно и питательно!"
+            class="products__bubble"
+          />
         </div>
 
         <!-- Right: 4×2 grid of category circles -->
@@ -74,12 +79,11 @@ const categories = computed(() => data.value?.categories ?? [])
   background-position: center;
   background-color: var(--color-green); /* fallback */
   border-radius: var(--radius-md);
-  padding: 32px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
   align-items: center;
-  gap: 32px;
-  min-height: 380px;
+  gap: 24px;
+  min-height: 360px;
   overflow: hidden;
 }
 
@@ -89,61 +93,44 @@ const categories = computed(() => data.value?.categories ?? [])
   align-self: stretch;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
-  min-height: 340px;
+  justify-content: flex-start;
+  min-height: 360px;
 }
 
-/* Semicircle backdrop sits BEHIND the girl */
+/* Soft green semicircle backdrop behind the girl */
 .products__girl-backdrop {
   position: absolute;
-  bottom: -32px;            /* hugs the bottom of the panel */
-  left: 50%;
-  width: 105%;
-  max-width: 520px;
+  bottom: 0;
+  left: 38%;
+  width: 90%;
+  max-width: 460px;
   transform: translateX(-50%);
   z-index: 1;
   pointer-events: none;
+  opacity: 0.85;
 }
 
-/* Girl photo — natural colors (no blend), but edges softly faded
-   so the stock image's white background blends into the green panel */
+/* Girl photo — flush to the left edge, natural colors */
 .products__girl-img {
   position: relative;
   z-index: 2;
   width: auto;
-  max-width: 100%;
-  max-height: 400px;
+  max-width: 92%;
+  max-height: 360px;
   object-fit: contain;
-  -webkit-mask-image: radial-gradient(ellipse 72% 90% at 50% 55%, #000 62%, transparent 100%);
-          mask-image: radial-gradient(ellipse 72% 90% at 50% 55%, #000 62%, transparent 100%);
+  object-position: left bottom;
 }
 
-/* ----- Speech bubble ----- */
+/* ----- Speech bubble (one self-contained image) ----- */
 .products__bubble {
   position: absolute;
-  top: 6%;
-  right: -4%;
-  width: clamp(150px, 19vw, 230px);
   z-index: 3;
+  top: 24%;
+  left: 56%;
+  width: clamp(150px, 21vw, 240px);
+  height: auto;
   pointer-events: none;
-}
-/* Flip the cloud horizontally so its tail points LEFT — i.e. down toward
-   the girl's mouth — as if she's the one speaking. */
-.products__bubble-cloud {
-  display: block;
-  width: 100%;
-  height: auto;
-  transform: scaleX(-1) rotate(6deg);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-}
-.products__bubble-text {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 78%;
-  height: auto;
-  object-fit: contain;
-  transform: rotate(-4deg); /* gentle text tilt, like in the design */
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
 /* ----- Category grid ----- */
@@ -154,6 +141,7 @@ const categories = computed(() => data.value?.categories ?? [])
   grid-template-columns: repeat(4, 1fr);
   gap: 24px 16px;
   justify-items: center;
+  padding: 32px 32px 32px 0;
 }
 
 /* ========================================================
@@ -162,33 +150,43 @@ const categories = computed(() => data.value?.categories ?? [])
 @media (max-width: 1023px) {
   .products__panel {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 24px;
+    gap: 16px;
   }
-  .products__girl       { min-height: 260px; }
-  .products__girl-img   { max-height: 280px; }
+  .products__girl {
+    min-height: 300px;
+    justify-content: center;
+  }
+  .products__girl-img {
+    max-height: 300px;
+    max-width: 70%;
+    object-position: center bottom;
+  }
   .products__girl-backdrop {
+    left: 50%;
     max-width: 380px;
-    bottom: -20px;
   }
   .products__bubble {
-    top: 2%;
-    right: 4%;
-    width: clamp(120px, 26vw, 180px);
+    top: 14%;
+    left: 58%;
+    width: clamp(140px, 30vw, 210px);
+  }
+  .products__grid {
+    padding: 0 24px 28px;
   }
 }
 
 @media (max-width: 600px) {
   .products { padding: 40px 0; }
+  .products__girl-img { max-width: 78%; }
+  .products__bubble {
+    top: 6%;
+    left: 54%;
+    width: 150px;
+  }
   .products__grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px 12px;
+    padding: 0 16px 24px;
   }
-  .products__bubble {
-    top: 0;
-    right: 2%;
-    width: 130px;
-  }
-  .products__girl-img { max-height: 240px; }
 }
 </style>

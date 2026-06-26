@@ -111,5 +111,31 @@
     { "id": "franchise", "title": "Франшиза",  "href": "#franchise" },
     { "id": "contacts",  "title": "Контакты",  "href": "#contacts" },
     { "id": "work",      "title": "Работа",    "href": "#work" }
-  ]
+  ],
+  "footer": {
+    "title": "Правовая информация",
+    "companyInfo": [
+      "Все права принадлежат",
+      "ООО «Компания Вита Джус»",
+      "ИНН 12456789/ОГРН123456789833"
+    ],
+    "links": [
+      [
+        { "title": "Публичная оферта",            "href": "#offer" },
+        { "title": "Политика конфиденциальности", "href": "#privacy" }
+      ],
+      [
+        { "title": "Пользовательское соглашение", "href": "#terms" },
+        { "title": "Бонусная программа",          "href": "#bonus" }
+      ]
+    ]
+  },
+  "joinUs": {
+    "title": "Присоединяйтесь к Vita Juice",
+    "socials": [
+      { "id": "vk", "title": "VK",        "icon": "/images/social-vk.png", "url": "https://vk.com" },
+      { "id": "ig", "title": "Instagram", "icon": "/images/social-ig.png", "url": "https://instagram.com" },
+      { "id": "fb", "title": "Facebook",  "icon": "/images/social-fb.png", "url": "https://facebook.com" }
+    ]
+  }
 }
