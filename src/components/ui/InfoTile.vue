@@ -1,10 +1,6 @@
 <script setup>
-/**
- * InfoTile — small icon + title + description block.
- * Reused for the payment options ("Наличными", "Картой", "Онлайн-оплата")
- * and the delivery options ("Курьером", "Самовывоз"), and will fit
- * the loyalty-section benefits row too.
- */
+// Маленький блок: иконка + заголовок + описание.
+// Используется в способах оплаты и доставки.
 defineProps({
   icon:        { type: String, required: true },
   title:       { type: String, required: true },

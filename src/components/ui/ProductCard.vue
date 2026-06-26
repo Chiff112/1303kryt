@@ -3,17 +3,9 @@ import BaseButton from './BaseButton.vue'
 import HeartButton from './HeartButton.vue'
 import { useCartStore } from '../../stores/cart.js'
 
-/**
- * ProductCard — a single product card for the best-sellers slider
- * (and any future catalogue grid).
- *
- * Now fully functional, mirroring JuiceCard on the СОКИ page:
- *   - the heart toggles the product in favorites (shared store)
- *   - «В корзину» adds the product and opens the cart popup
- *
- * Accepts the whole product object so it has everything the cart
- * needs (id, title, volume, price, image, bonus, ...).
- */
+// Карточка товара для блока «Хиты продаж».
+// Сердечко добавляет в избранное, «В корзину» — кладёт товар и открывает попап.
+// Принимает целый объект товара, чтобы передать в корзину всё нужное.
 const props = defineProps({
   product: { type: Object, required: true }
 })
@@ -59,7 +51,7 @@ function addToCart() {
   padding: 16px 12px 20px;
 }
 
-/* ----- Media ----- */
+/* ----- Фото ----- */
 .product-card__media {
   position: relative;
   width: 100%;
@@ -76,7 +68,7 @@ function addToCart() {
   object-fit: contain;
 }
 
-/* "+20 б" bonus badge (image already contains the text) */
+/* Значок бонусов (текст уже на картинке) */
 .product-card__bonus {
   position: absolute;
   top: 4px;
@@ -86,7 +78,7 @@ function addToCart() {
   object-fit: contain;
 }
 
-/* ----- Text ----- */
+/* ----- Текст ----- */
 .product-card__title {
   font-size: 16px;
   font-weight: 700;
@@ -100,7 +92,7 @@ function addToCart() {
   margin-bottom: 8px;
 }
 
-/* ----- Price + heart row ----- */
+/* ----- Строка с ценой и сердечком ----- */
 .product-card__price-row {
   display: flex;
   align-items: center;
@@ -114,6 +106,6 @@ function addToCart() {
 }
 .product-card__price-currency { font-weight: 800; }
 
-/* ----- CTA ----- */
+/* ----- Кнопка ----- */
 .product-card__cta { margin-top: auto; }
 </style>

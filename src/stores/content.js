@@ -1,47 +1,21 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-/**
- * Content store (Pinia).
- *
- * Loads all site content — categories, products, navigation, delivery,
- * loyalty, account history, franchise copy, … — from the JSON file
- * /public/data/content.json via a single fetch() request.
- *
- * The request is fired once (on first store use) and shared by every
- * component, so the whole site is driven by one data source.
- */
+// Хранилище контента. Один раз загружает весь текст и список товаров
+// из файла /public/data/content.json и раздаёт их всем компонентам.
 export const useContentStore = defineStore('content', () => {
-  const data = ref(null)
-  const loading = ref(false)
-  const error = ref(null)
-  let requestPromise = null
+  const data = ref(null)   // сюда попадёт содержимое JSON-файла
+  let request = null       // запоминаем запрос, чтобы не грузить дважды
 
   async function load() {
-    if (data.value || requestPromise) return requestPromise
-    loading.value = true
-    error.value = null
-    requestPromise = fetch('/data/content.json')
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        return res.json()
-      })
-      .then((json) => {
-        data.value = json
-        return json
-      })
-      .catch((err) => {
-        error.value = err.message
-        console.error('Failed to load content.json:', err)
-      })
-      .finally(() => {
-        loading.value = false
-      })
-    return requestPromise
+    if (data.value || request) return request
+    request = fetch('/data/content.json')
+      .then((res) => res.json())
+      .then((json) => (data.value = json))
+      .catch((err) => console.error('Не удалось загрузить content.json:', err))
+    return request
   }
 
-  // kick off the request as soon as the store is first used
-  load()
-
-  return { data, loading, error, load }
+  load() // запускаем загрузку сразу при первом обращении к стору
+  return { data, load }
 })

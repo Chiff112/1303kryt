@@ -1,11 +1,5 @@
 <script setup>
-/**
- * SectionDivider — full-width dashed separator line.
- * Uses the original `dashed-line.png` asset from the design so the
- * dotted pattern matches the site exactly.
- *
- * Placed at the start and/or end of page sections.
- */
+// Пунктирная линия-разделитель между секциями (картинка dashed-line.png).
 </script>
 
 <template>

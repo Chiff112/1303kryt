@@ -3,20 +3,8 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '../../stores/content.js'
 
-/**
- * HeroSection
- *
- * Full-width banner slider with:
- *   - per-slide background image (data-driven from content.json)
- *   - large cursive title (`Каveat` font) on the left
- *   - circular white price tag with weight + price on the right
- *   - pagination dots and prev / next arrows
- *   - autoplay (pauses on hover or while the tab is hidden)
- *   - touch swipe support on mobile
- *
- * All slides come from `content.heroSlides`. To add or change slides,
- * just edit /public/data/content.json — no code changes required.
- */
+// Главный баннер-слайдер вверху страницы (акции).
+// Слайды берутся из content.json, листаются стрелками и точками.
 
 const AUTOPLAY_MS = 6000
 
@@ -47,7 +35,7 @@ function go(idx) {
 function next() { go(currentIndex.value + 1) }
 function prev() { go(currentIndex.value - 1) }
 
-// Touch swipe
+// Свайп пальцем
 let touchStartX = 0
 function onTouchStart(e) { touchStartX = e.touches[0].clientX }
 function onTouchEnd(e) {
@@ -56,7 +44,7 @@ function onTouchEnd(e) {
 }
 
 onMounted(() => {
-  // wait until slides arrive, then start autoplay
+  // ждём загрузки слайдов и запускаем автопрокрутку
   if (slides.value.length) startAutoplay()
 })
 watch(slides, (v) => { if (v.length) startAutoplay() })
@@ -74,7 +62,7 @@ onBeforeUnmount(stopAutoplay)
     @touchstart.passive="onTouchStart"
     @touchend.passive="onTouchEnd"
   >
-    <!-- Track that holds every slide; we shift it on index change -->
+    <!-- Лента со всеми слайдами; сдвигаем её при смене номера -->
     <div
       class="hero__track"
       :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
@@ -103,7 +91,7 @@ onBeforeUnmount(stopAutoplay)
       </article>
     </div>
 
-    <!-- Arrows -->
+    <!-- Стрелки -->
     <button
       class="hero__arrow hero__arrow--prev"
       type="button"
@@ -125,7 +113,7 @@ onBeforeUnmount(stopAutoplay)
       </svg>
     </button>
 
-    <!-- Pagination dots -->
+    <!-- Точки-переключатели -->
     <div class="hero__dots" role="tablist" aria-label="Слайды">
       <button
         v-for="(slide, i) in slides"
@@ -142,14 +130,12 @@ onBeforeUnmount(stopAutoplay)
 </template>
 
 <style scoped>
-/* ========================================================
-   Layout
-   ======================================================== */
+/* Раскладка */
 .hero {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: #ddd; /* fallback while image loads */
+  background: #ddd; /* запасной фон, пока грузится картинка */
 }
 .hero__track {
   display: flex;
@@ -163,7 +149,7 @@ onBeforeUnmount(stopAutoplay)
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* Height scales with viewport, capped at 560px on desktop */
+  /* Высота подстраивается под экран, максимум 560px */
   min-height: clamp(280px, 38vw, 560px);
 }
 .hero__inner {
@@ -175,12 +161,10 @@ onBeforeUnmount(stopAutoplay)
   justify-content: space-between;
   gap: 24px;
   padding-top: 40px;
-  padding-bottom: 80px; /* leaves room for the dots */
+  padding-bottom: 80px; /* оставляем место для точек */
 }
 
-/* ========================================================
-   Title (cursive)
-   ======================================================== */
+/* Заголовок (рукописный шрифт) */
 .hero__title {
   font-family: var(--font-script);
   font-weight: 700;
@@ -195,9 +179,7 @@ onBeforeUnmount(stopAutoplay)
   display: block;
 }
 
-/* ========================================================
-   Price tag (white circle on the right)
-   ======================================================== */
+/* Ценник (белый круг справа) */
 .hero__tag {
   position: relative;
   flex: 0 0 auto;
@@ -223,9 +205,7 @@ onBeforeUnmount(stopAutoplay)
   letter-spacing: -1px;
 }
 
-/* ========================================================
-   Arrows
-   ======================================================== */
+/* Стрелки */
 .hero__arrow {
   position: absolute;
   top: 50%;
@@ -248,9 +228,7 @@ onBeforeUnmount(stopAutoplay)
 .hero__arrow--prev { left: 16px; }
 .hero__arrow--next { right: 16px; }
 
-/* ========================================================
-   Dots
-   ======================================================== */
+/* Точки-переключатели */
 .hero__dots {
   position: absolute;
   left: 50%;
@@ -273,9 +251,7 @@ onBeforeUnmount(stopAutoplay)
   transform: scale(1.15);
 }
 
-/* ========================================================
-   Mobile / tablet adjustments
-   ======================================================== */
+/* Правки под телефоны и планшеты */
 @media (max-width: 767px) {
   .hero__inner {
     padding-top: 24px;

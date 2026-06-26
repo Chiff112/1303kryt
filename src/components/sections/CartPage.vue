@@ -4,14 +4,9 @@ import { useRouter } from 'vue-router'
 import { useCartStore } from '../../stores/cart.js'
 import BaseButton from '../ui/BaseButton.vue'
 
-/**
- * CartPage — full-page checkout flow with a 3-step green stepper:
- *   1. КОРЗИНА    — items, promo code, bottle gift, total → "ОФОРМИТЬ"
- *   2. ОФОРМЛЕНИЕ — delivery address form + comment → "ОПЛАТА"
- *   3. ОПЛАТА     — order summary, bonuses, delivery, phone/code → "ОПЛАТИТЬ"
- *
- * Driven by the shared cart store. Uses the router to leave the flow.
- */
+// Страница корзины и оформления заказа из трёх шагов:
+// 1) Корзина  2) Оформление (адрес)  3) Оплата (телефон + код).
+// Работает с общим стором корзины.
 
 const cart = useCartStore()
 const router = useRouter()
@@ -20,13 +15,13 @@ const STEPS = ['cart', 'checkout', 'payment']
 const step = ref('cart')
 
 function goStep(s) {
-  // can't skip ahead past an empty cart
+  // нельзя перескочить вперёд с пустой корзиной
   if (cart.isEmpty && s !== 'cart') return
   step.value = s
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-/* ---------------- Step 1: promo ---------------- */
+/* ---------------- Шаг 1: промокод ---------------- */
 const promoInput = ref('')
 const promoMsg = ref(null)
 const showPromoInfo = ref(false)
@@ -35,7 +30,7 @@ function applyPromo() {
   promoMsg.value = res
 }
 
-/* ---------------- Step 2: address form ---------------- */
+/* ---------------- Шаг 2: адрес доставки ---------------- */
 const address = reactive({
   street: '', building: '', entrance: '', floor: '', flat: '', intercom: '', comment: ''
 })
@@ -46,7 +41,7 @@ const addressErrors = computed(() => ({
   entrance: addressTried.value && !address.entrance.trim(),
   floor:    addressTried.value && !address.floor.trim(),
   flat:     addressTried.value && !address.flat.trim()
-  // intercom + comment are optional
+  // домофон и комментарий — необязательные
 }))
 function saveAddress() {
   addressTried.value = true
@@ -55,7 +50,7 @@ function saveAddress() {
   goStep('payment')
 }
 
-/* ---------------- Step 3: payment ---------------- */
+/* ---------------- Шаг 3: оплата ---------------- */
 const payment = reactive({ phone: '', name: '', code: '', useBonus: '' })
 const codeSent = ref(false)
 const paymentTried = ref(false)
@@ -79,7 +74,7 @@ function pay() {
   cart.clear()
 }
 
-// Bonus that can be redeemed (capped at available bonus and order total)
+// Сколько бонусов можно списать (не больше баланса и суммы заказа)
 const bonusToUse = computed(() => {
   const n = parseInt(payment.useBonus, 10)
   if (Number.isNaN(n) || n < 0) return 0
@@ -90,7 +85,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 
 <template>
   <section class="cart-page">
-    <!-- Stepper band -->
+    <!-- Плашка с шагами -->
     <div class="stepper">
       <div class="stepper__inner container">
         <button
@@ -105,7 +100,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
     </div>
 
     <div class="container cart-page__body">
-      <!-- ================= STEP 1: CART ================= -->
+      <!-- ================= ШАГ 1: КОРЗИНА ================= -->
       <template v-if="step === 'cart'">
         <div v-if="cart.isEmpty" class="cart-page__empty">
           <p>Ваша корзина пуста</p>
@@ -113,7 +108,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
         </div>
 
         <template v-else>
-          <!-- Items -->
+          <!-- Товары -->
           <div class="cart-line" v-for="item in cart.items" :key="item.id + item.volume">
             <img :src="item.image" :alt="item.title" class="cart-line__img" />
             <div class="cart-line__info">
@@ -136,7 +131,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
             </div>
           </div>
 
-          <!-- Promo code -->
+          <!-- Промокод -->
           <div class="promo">
             <input
               v-model="promoInput"
@@ -155,20 +150,20 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
           </div>
           <p v-if="promoMsg" class="promo__msg" :class="{ 'is-ok': promoMsg.ok }">{{ promoMsg.message }}</p>
 
-          <!-- Bottle gift -->
+          <!-- Подарок-бутылочка -->
           <div class="summary-row summary-row--gift">
             <span class="summary-row__label">Бутылочка</span>
             <img src="/images/gift.png" alt="" class="summary-row__gift-icon" />
             <span class="summary-row__value">0₽</span>
           </div>
 
-          <!-- Discount (if promo) -->
+          <!-- Скидка (если есть промокод) -->
           <div v-if="cart.discount" class="summary-row">
             <span class="summary-row__label">Скидка по промокоду</span>
             <span class="summary-row__value">−{{ cart.discount }}₽</span>
           </div>
 
-          <!-- Total -->
+          <!-- Итого -->
           <div class="summary-row summary-row--total">
             <span class="summary-row__label">Сумма заказа</span>
             <span class="summary-row__value">{{ cart.totalPrice }}₽</span>
@@ -180,7 +175,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
         </template>
       </template>
 
-      <!-- ================= STEP 2: CHECKOUT ================= -->
+      <!-- ================= ШАГ 2: ОФОРМЛЕНИЕ ================= -->
       <template v-else-if="step === 'checkout'">
         <div class="addr-grid">
           <div class="addr-field">
@@ -237,7 +232,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
         </div>
       </template>
 
-      <!-- ================= STEP 3: PAYMENT ================= -->
+      <!-- ================= ШАГ 3: ОПЛАТА ================= -->
       <template v-else-if="step === 'payment'">
         <div v-if="paid" class="cart-page__done">
           <h2>Заказ оплачен 🎉</h2>
@@ -246,7 +241,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
         </div>
 
         <template v-else>
-          <!-- Order summary -->
+          <!-- Состав заказа -->
           <div class="summary-row">
             <span class="summary-row__label summary-row__label--lg">Сумма заказа</span>
             <span class="summary-row__value summary-row__value--lg">{{ cart.totalPrice }}₽</span>
@@ -267,7 +262,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
             <span class="summary-row__value">{{ finalTotal }}₽</span>
           </div>
 
-          <!-- Phone / name / code -->
+          <!-- Телефон / имя / код -->
           <div class="pay-form">
             <div class="pay-fields">
               <div class="pay-field">
@@ -314,7 +309,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 <style scoped>
 .cart-page { background: #fff; }
 
-/* ---------- Stepper ---------- */
+/* ---------- Плашка с шагами ---------- */
 .stepper {
   background: var(--color-green);
   margin-bottom: 32px;
@@ -340,7 +335,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 
 .cart-page__body { padding-bottom: 48px; }
 
-/* ---------- Empty / done ---------- */
+/* ---------- Пустая корзина / готово ---------- */
 .cart-page__empty,
 .cart-page__done {
   text-align: center;
@@ -359,7 +354,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 }
 .cart-page__done p { color: var(--color-text-muted); margin: 0; }
 
-/* ---------- Cart line ---------- */
+/* ---------- Строка товара ---------- */
 .cart-line {
   display: flex;
   gap: 24px;
@@ -401,7 +396,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 }
 .cart-line__price { font-size: 24px; font-weight: 800; }
 
-/* Quantity pill (shared style) */
+/* Счётчик количества (общий стиль) */
 .stepper-pill {
   display: inline-flex;
   align-items: center;
@@ -421,7 +416,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 }
 .stepper-pill span { font-size: 16px; font-weight: 700; min-width: 14px; text-align: center; }
 
-/* ---------- Promo ---------- */
+/* ---------- Промокод ---------- */
 .promo {
   display: flex;
   align-items: center;
@@ -469,7 +464,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 .promo__msg { margin: 10px 0 0; font-size: 14px; font-weight: 600; color: var(--color-red); }
 .promo__msg.is-ok { color: var(--color-green); }
 
-/* ---------- Summary rows ---------- */
+/* ---------- Строки с суммами ---------- */
 .summary-row {
   display: flex;
   align-items: center;
@@ -516,7 +511,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
   outline: none;
 }
 
-/* Yellow "Итого к оплате" bar */
+/* Жёлтая полоса «Итого к оплате» */
 .summary-row--final {
   background: var(--color-yellow);
   border: none;
@@ -524,14 +519,14 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
   margin: 4px 0;
 }
 
-/* ---------- CTA ---------- */
+/* ---------- Кнопка ---------- */
 .cart-page__cta {
   display: flex;
   justify-content: center;
   padding: 32px 0 8px;
 }
 
-/* ---------- Address form (step 2) ---------- */
+/* ---------- Форма адреса (шаг 2) ---------- */
 .addr-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -577,7 +572,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 }
 .comment__save { margin-top: 16px; }
 
-/* ---------- Payment (step 3) ---------- */
+/* ---------- Оплата (шаг 3) ---------- */
 .pay-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -607,7 +602,7 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 .pay-side { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
 .pay-agreement { font-size: 11px; color: var(--color-text-muted); line-height: 1.4; margin: 0; max-width: 260px; }
 
-/* ---------- Responsive ---------- */
+/* ---------- Адаптив (под телефоны) ---------- */
 @media (max-width: 900px) {
   .addr-grid { grid-template-columns: 1fr; gap: 14px; }
   .pay-form { grid-template-columns: 1fr; gap: 20px; }

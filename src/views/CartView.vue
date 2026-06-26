@@ -2,7 +2,7 @@
 import CartPage       from '../components/sections/CartPage.vue'
 import SectionDivider from '../components/ui/SectionDivider.vue'
 
-/** CartView — the full КОРЗИНА → ОФОРМЛЕНИЕ → ОПЛАТА flow ("/cart"). */
+// Корзина и оформление заказа ("/cart").
 </script>
 
 <template>

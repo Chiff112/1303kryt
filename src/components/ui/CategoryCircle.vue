@@ -1,10 +1,6 @@
 <script setup>
-/**
- * CategoryCircle — a circular product-category card.
- * Shows a round image on top and an uppercase white label below.
- * Used 8 times in the "Наша продукция" grid; can be reused on any
- * other page that needs to navigate the catalogue.
- */
+// Круглая карточка категории: круглая картинка и подпись снизу.
+// Используется в сетке «Наша продукция».
 defineProps({
   title: { type: String, required: true },
   image: { type: String, required: true },

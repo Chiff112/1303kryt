@@ -1,12 +1,5 @@
 <script setup>
-/**
- * BaseButton — primary CTA. Used in product cards ("В корзину"),
- * the loyalty section ("Получить"), and any other call-to-action.
- *
- * Variants (`type` prop):
- *   - primary  → yellow pill (default)
- *   - outline  → bordered transparent
- */
+// Кнопка. variant: primary — жёлтая, outline — с рамкой. size — размер.
 defineProps({
   variant: { type: String, default: 'primary' },
   size:    { type: String, default: 'md' },
@@ -38,12 +31,12 @@ defineProps({
 }
 .btn:active { transform: translateY(1px); }
 
-/* Sizes */
+/* Размеры */
 .btn--sm { padding: 8px 14px;  font-size: 11px; }
 .btn--md { padding: 10px 22px; font-size: 13px; }
 .btn--lg { padding: 14px 30px; font-size: 15px; }
 
-/* Variants */
+/* Варианты */
 .btn--primary {
   background: var(--color-yellow);
   color: var(--color-text);

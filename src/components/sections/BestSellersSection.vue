@@ -5,17 +5,7 @@ import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import ProductCard from '../ui/ProductCard.vue'
 
-/**
- * BestSellersSection — "Хиты продаж".
- *
- * Card slider: 3 cards visible on desktop, 2 on tablet, 1 on mobile.
- * Arrows on the left and right of the section navigate one card at a
- * time; touch swipe works on mobile.
- *
- * Top and bottom dashed lines match the Figma design.
- *
- * All products come from /data/content.json (`bestSellers`).
- */
+// Секция «Хиты продаж»: слайдер карточек товаров.
 
 const { data } = storeToRefs(useContentStore())
 const products = computed(() => data.value?.bestSellers ?? [])
@@ -48,7 +38,7 @@ const cardStyle = computed(() => ({
   flex: `0 0 ${100 / visibleCount.value}%`
 }))
 
-// Touch swipe
+// Свайп пальцем
 let touchStartX = 0
 function onTouchStart(e) { touchStartX = e.touches[0].clientX }
 function onTouchEnd(e) {
@@ -140,7 +130,7 @@ onBeforeUnmount(() => {
 }
 .best-sellers__cell { min-width: 0; }
 
-/* ----- Arrows ----- */
+/* ----- Стрелки ----- */
 .best-sellers__arrow {
   flex: 0 0 auto;
   width: 36px;

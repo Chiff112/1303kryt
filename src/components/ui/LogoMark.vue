@@ -1,8 +1,5 @@
 <script setup>
-/**
- * LogoMark — the Vita Juice circular logo.
- * Reusable brand mark; links to the home route ("/").
- */
+// Круглый логотип Vita Juice. Ведёт на главную страницу.
 defineProps({
   size: { type: [Number, String], default: 80 }
 })

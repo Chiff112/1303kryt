@@ -2,7 +2,7 @@
 import JuicesSection  from '../components/sections/JuicesSection.vue'
 import SectionDivider from '../components/ui/SectionDivider.vue'
 
-/** JuicesView — the "СОКИ" category page ("/juices"). */
+// Страница «Соки» ("/juices").
 </script>
 
 <template>

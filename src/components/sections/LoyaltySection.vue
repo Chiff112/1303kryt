@@ -5,16 +5,7 @@ import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import BaseButton from '../ui/BaseButton.vue'
 
-/**
- * LoyaltySection — "Наша система лояльности".
- *
- * Two-column layout (stacks on mobile):
- *   - Left:  virtual card image (Vita Juice loyalty card)
- *   - Right: subtitle + 3 benefit rows (icon + label) + CTA button
- *
- * Benefits come from /data/content.json so the section reorders /
- * relabels automatically when the JSON changes.
- */
+// Секция «Наша система лояльности»: карта клиента и список выгод.
 
 const { data } = storeToRefs(useContentStore())
 const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
@@ -26,7 +17,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
       <SectionTitle>Наша система лояльности</SectionTitle>
 
       <div class="loyalty__grid">
-        <!-- ============ Left: virtual card ============ -->
+        <!-- ============ Слева: карта клиента ============ -->
         <div class="loyalty__card-wrap">
           <img
             src="/images/virtual-card.png"
@@ -35,7 +26,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
           />
         </div>
 
-        <!-- ============ Right: text + benefits + CTA ============ -->
+        <!-- ============ Справа: текст, выгоды и кнопка ============ -->
         <div class="loyalty__content">
           <h3 class="loyalty__subtitle">С картой вы получаете</h3>
 
@@ -69,7 +60,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
   align-items: center;
 }
 
-/* ----- Card column ----- */
+/* ----- Колонка с картой ----- */
 .loyalty__card-wrap {
   display: flex;
   justify-content: center;
@@ -82,7 +73,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
-/* ----- Content column ----- */
+/* ----- Колонка с текстом ----- */
 .loyalty__content {
   display: flex;
   flex-direction: column;
@@ -98,7 +89,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
   margin: 0;
 }
 
-/* ----- Benefits ----- */
+/* ----- Выгоды ----- */
 .loyalty__benefits {
   display: flex;
   flex-direction: column;
@@ -123,7 +114,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
   line-height: 1.35;
 }
 
-/* ----- CTA ----- */
+/* ----- Кнопка ----- */
 .loyalty__cta {
   display: flex;
   align-items: center;
@@ -139,9 +130,7 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
   color: var(--color-text);
 }
 
-/* ========================================================
-   Responsive
-   ======================================================== */
+/* Адаптив (под телефоны) */
 @media (max-width: 900px) {
   .loyalty__grid {
     grid-template-columns: 1fr;

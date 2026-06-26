@@ -4,34 +4,23 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth.js'
 import BaseButton from '../ui/BaseButton.vue'
 
-/**
- * AccountPage — the personal area, reached from the header once logged
- * in. A green band hosts two tabs plus the live bonus balance:
- *
- *   ЛИЧНЫЙ КАБИНЕТ | ИСТОРИЯ ЗАКАЗОВ            БАЛАНС {N}
- *
- *   • profile  — editable Имя / Телефон / Дата рождения / E-mail with
- *                inline validation and a birthday-gift tooltip.
- *   • history  — past orders (date · total · expandable «состав» ·
- *                «повторить»), loaded from content.json via the auth store.
- *
- * «Сохранить» saves the profile, «Выйти» logs out (→ "/").
- * «Повторить» drops an order's items back into the cart (→ "/cart").
- */
+// Личный кабинет. Зелёная плашка с вкладками и балансом, а ниже:
+//  - профиль: имя/телефон/дата рождения/почта с проверкой полей;
+//  - история заказов: дата, сумма, раскрывающийся состав и «повторить».
 
 const auth = useAuthStore()
 const router = useRouter()
 
-// make sure orders/balance are loaded (also triggered on login)
+// на всякий случай подгружаем баланс и историю заказов
 auth.loadAccount()
 
-const tab = ref('profile') // 'profile' | 'history'
+const tab = ref('profile') // активная вкладка: 'profile' или 'history'
 function goTab(t) {
   tab.value = t
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-/* ---------------- Profile form ---------------- */
+/* ---------------- Форма профиля ---------------- */
 const form = reactive({
   name: auth.user.name,
   phone: auth.user.phone,
@@ -62,8 +51,8 @@ function logout() {
   router.push('/')
 }
 
-/* ---------------- Order history ---------------- */
-const openOrder = ref(null) // index of the expanded order, or null
+/* ---------------- История заказов ---------------- */
+const openOrder = ref(null) // номер раскрытого заказа или null
 function toggleOrder(i) {
   openOrder.value = openOrder.value === i ? null : i
 }
@@ -75,7 +64,7 @@ function repeat(order) {
 
 <template>
   <section class="account">
-    <!-- Band with tabs + balance -->
+    <!-- Зелёная плашка: вкладки и баланс -->
     <div class="account-band">
       <div class="account-band__inner container">
         <button
@@ -95,7 +84,7 @@ function repeat(order) {
     </div>
 
     <div class="container account__body">
-      <!-- ================= PROFILE ================= -->
+      <!-- ================= ПРОФИЛЬ ================= -->
       <template v-if="tab === 'profile'">
         <div class="profile">
           <div class="profile__form">
@@ -117,7 +106,7 @@ function repeat(order) {
               </div>
             </div>
 
-            <!-- Дата рождения — info icon sits at the END of the line -->
+            <!-- Дата рождения — иконка «i» стоит в конце строки -->
             <div class="profile-field profile-field--birthday">
               <label class="profile-field__label">Дата рождения</label>
               <div class="profile-field__control">
@@ -134,14 +123,14 @@ function repeat(order) {
                   @click="showBirthdayHint = !showBirthdayHint"
                 >i</button>
 
-                <!-- Birthday-gift speech bubble — appears up-right of the icon -->
+                <!-- Облако с подарком — появляется сверху-справа от иконки -->
                 <div v-if="showBirthdayHint" class="profile__bubble">
                   <span>Дарим подарок<br />на ДР!</span>
                 </div>
               </div>
             </div>
 
-            <!-- E-mail -->
+            <!-- Почта -->
             <div class="profile-field">
               <label class="profile-field__label">E-mail</label>
               <div class="profile-field__control">
@@ -150,7 +139,7 @@ function repeat(order) {
               </div>
             </div>
 
-            <!-- Buttons -->
+            <!-- Кнопки -->
             <div class="profile__actions">
               <BaseButton variant="primary" size="md" @click="save">Сохранить</BaseButton>
               <BaseButton variant="primary" size="md" @click="logout">Выйти</BaseButton>
@@ -160,7 +149,7 @@ function repeat(order) {
         </div>
       </template>
 
-      <!-- ================= HISTORY ================= -->
+      <!-- ================= ИСТОРИЯ ================= -->
       <template v-else>
         <ul class="orders">
           <li v-for="(order, i) in auth.orders" :key="order.date" class="order">
@@ -189,7 +178,7 @@ function repeat(order) {
               </button>
             </div>
 
-            <!-- Expanded item breakdown -->
+            <!-- Раскрытый список товаров заказа -->
             <transition name="compose">
               <ul v-if="openOrder === i" class="order__items">
                 <li v-for="item in order.items" :key="item.id" class="order__item">
@@ -201,7 +190,7 @@ function repeat(order) {
           </li>
         </ul>
 
-        <!-- Same persistent account actions as the profile tab -->
+        <!-- Те же кнопки, что и на вкладке профиля -->
         <div class="profile__actions profile__actions--center">
           <BaseButton variant="primary" size="md" @click="goTab('profile')">Сохранить</BaseButton>
           <BaseButton variant="primary" size="md" @click="logout">Выйти</BaseButton>
@@ -214,7 +203,7 @@ function repeat(order) {
 <style scoped>
 .account { background: #fff; }
 
-/* ---------- Band (reuses the green stepper look) ---------- */
+/* ---------- Зелёная плашка ---------- */
 .account-band {
   background: var(--color-green);
   margin-bottom: 36px;
@@ -249,7 +238,7 @@ function repeat(order) {
 
 .account__body { padding-bottom: 48px; }
 
-/* ---------- Profile ---------- */
+/* ---------- Профиль ---------- */
 .profile {
   display: flex;
   align-items: flex-start;
@@ -276,7 +265,7 @@ function repeat(order) {
   min-width: 0;
   max-width: 420px;
 }
-/* the date-of-birth line is shorter so the info icon terminates it */
+/* линия даты рождения короче — иконка стоит в её конце */
 .profile-field--birthday { gap: 14px; }
 .profile-field--birthday .profile-field__control {
   flex: 0 0 auto;
@@ -330,7 +319,7 @@ function repeat(order) {
   font-weight: 600;
 }
 
-/* Birthday-gift speech bubble — anchored up-right of the info icon */
+/* Облако с подарком — закреплено сверху-справа от иконки */
 .profile-field__info-wrap {
   position: relative;
   flex: 0 0 auto;
@@ -360,7 +349,7 @@ function repeat(order) {
   padding-bottom: 14px;
 }
 
-/* ---------- Order history ---------- */
+/* ---------- История заказов ---------- */
 .orders { display: block; }
 .order {
   border-bottom: 4px dashed var(--color-text);
@@ -418,11 +407,11 @@ function repeat(order) {
 }
 .order__item-price { flex: 0 0 110px; }
 
-/* expand/collapse */
+/* раскрытие/сворачивание */
 .compose-enter-active, .compose-leave-active { transition: opacity var(--t-base); }
 .compose-enter-from, .compose-leave-to { opacity: 0; }
 
-/* ---------- Responsive ---------- */
+/* ---------- Адаптив (под телефоны) ---------- */
 @media (max-width: 760px) {
   .profile { flex-direction: column; }
   .profile__bubble {

@@ -5,20 +5,7 @@ import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import CategoryCircle from '../ui/CategoryCircle.vue'
 
-/**
- * ProductsSection — "Наша продукция".
- *
- * Matches the Figma frame:
- *   - Rounded green panel (`bg-products.png`).
- *   - The girl sits flush against the LEFT edge of the panel, standing
- *     in front of a soft green semicircle backdrop.
- *   - A self-contained speech bubble (cloud + text baked into one PNG)
- *     floats to the right of her head, tilted slightly (< 45°), its
- *     tail pointing left-down toward her mouth.
- *   - 4×2 grid of category circles fills the right side.
- *
- * Categories come from /data/content.json.
- */
+// Секция «Наша продукция»: девушка с облаком и сетка категорий.
 
 const { data } = storeToRefs(useContentStore())
 const categories = computed(() => data.value?.categories ?? [])
@@ -32,7 +19,7 @@ const categories = computed(() => data.value?.categories ?? [])
 
     <div class="products__panel">
       <div class="products__panel-inner container">
-        <!-- Left: girl with smoothie + semicircle backdrop + speech bubble -->
+        <!-- Слева: девушка со смузи, полукруг-фон и облако -->
         <div class="products__girl">
           <img
             src="/images/girl-backdrop.png"
@@ -46,7 +33,7 @@ const categories = computed(() => data.value?.categories ?? [])
             class="products__girl-img"
           />
 
-          <!-- Complete bubble (cloud + phrase in one image) -->
+          <!-- Готовое облако (текст уже на картинке) -->
           <img
             src="/images/bubble-products.png"
             alt="Полезно и питательно!"
@@ -54,7 +41,7 @@ const categories = computed(() => data.value?.categories ?? [])
           />
         </div>
 
-        <!-- Right: 4×2 grid of category circles -->
+        <!-- Справа: сетка кружков-категорий 4×2 -->
         <div class="products__grid">
           <CategoryCircle
             v-for="cat in categories"
@@ -91,7 +78,7 @@ const categories = computed(() => data.value?.categories ?? [])
   min-height: 360px;
 }
 
-/* ----- Girl column ----- */
+/* ----- Колонка с девушкой ----- */
 .products__girl {
   position: relative;
   align-self: stretch;
@@ -101,7 +88,7 @@ const categories = computed(() => data.value?.categories ?? [])
   min-height: 360px;
 }
 
-/* Soft green semicircle backdrop behind the girl */
+/* Мягкий зелёный полукруг за девушкой */
 .products__girl-backdrop {
   position: absolute;
   bottom: 0;
@@ -114,7 +101,7 @@ const categories = computed(() => data.value?.categories ?? [])
   opacity: 0.85;
 }
 
-/* Girl photo — flush to the left edge, natural colors */
+/* Фото девушки — прижато к левому краю */
 .products__girl-img {
   position: relative;
   z-index: 2;
@@ -125,7 +112,7 @@ const categories = computed(() => data.value?.categories ?? [])
   object-position: left bottom;
 }
 
-/* ----- Speech bubble (one self-contained image) ----- */
+/* ----- Облако (готовая картинка) ----- */
 .products__bubble {
   position: absolute;
   z-index: 3;
@@ -137,7 +124,7 @@ const categories = computed(() => data.value?.categories ?? [])
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
-/* ----- Category grid ----- */
+/* ----- Сетка категорий ----- */
 .products__grid {
   position: relative;
   z-index: 1;
@@ -148,9 +135,7 @@ const categories = computed(() => data.value?.categories ?? [])
   padding: 32px 32px 32px 0;
 }
 
-/* ========================================================
-   Responsive
-   ======================================================== */
+/* Адаптив (под телефоны) */
 @media (max-width: 1023px) {
   .products__panel-inner {
     grid-template-columns: 1fr;

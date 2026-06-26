@@ -1,22 +1,14 @@
 <script setup>
 import { useCartStore } from '../../stores/cart.js'
 
-/**
- * HeartButton — wishlist toggle.
- * Click to add/remove from favorites; fills red when active.
- * Backed by the shared cart store, so the same product shows the same
- * state on its card and in its detail modal.
- */
-const props = defineProps({
+// Кнопка-сердечко «в избранное». Нажатие добавляет/убирает товар,
+// активное состояние закрашено розовым. Данные — в общем сторе корзины.
+defineProps({
   productId: { type: [String, Number], required: true },
   size:      { type: Number, default: 24 }
 })
 
 const cart = useCartStore()
-
-function toggle() {
-  cart.toggleFavorite(props.productId)
-}
 </script>
 
 <template>
@@ -26,7 +18,7 @@ function toggle() {
     type="button"
     :aria-pressed="cart.isFavorite(productId)"
     aria-label="В избранное"
-    @click.stop="toggle"
+    @click.stop="cart.toggleFavorite(productId)"
   >
     <svg
       :width="size" :height="size"

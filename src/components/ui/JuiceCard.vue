@@ -3,13 +3,8 @@ import BaseButton from './BaseButton.vue'
 import HeartButton from './HeartButton.vue'
 import { useCartStore } from '../../stores/cart.js'
 
-/**
- * JuiceCard — a product card on the category (juices) page.
- *
- * White card that lifts on hover. Clicking the card body opens the
- * product detail modal. The "В корзину" button and the heart act
- * independently (they don't open the modal).
- */
+// Карточка товара на странице «Соки». Клик по карточке открывает
+// окно с подробностями. Кнопка «В корзину» и сердечко работают сами по себе.
 const props = defineProps({
   product: { type: Object, required: true }
 })

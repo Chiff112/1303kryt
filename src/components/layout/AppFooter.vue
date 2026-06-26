@@ -5,9 +5,7 @@ import { useRouter } from 'vue-router'
 import { useContentStore } from '../../stores/content.js'
 import { useCartStore } from '../../stores/cart.js'
 
-/**
- * AppFooter — legal-information footer with a small cart summary line.
- */
+// Подвал сайта: правовая информация и строка с суммой корзины.
 
 const { data } = storeToRefs(useContentStore())
 const footer = computed(() => data.value?.footer ?? null)
@@ -18,7 +16,7 @@ const router = useRouter()
 <template>
   <footer v-if="footer" class="app-footer">
     <div class="container">
-      <!-- Cart summary line -->
+      <!-- Строка с суммой корзины -->
       <button
         v-if="cart.count"
         class="app-footer__cart"
@@ -34,7 +32,7 @@ const router = useRouter()
       </button>
 
       <div class="app-footer__grid">
-        <!-- Column 1: company info -->
+        <!-- Колонка 1: данные компании -->
         <div class="app-footer__col">
           <h3 class="app-footer__title">{{ footer.title }}</h3>
           <p class="app-footer__info">
@@ -44,7 +42,7 @@ const router = useRouter()
           </p>
         </div>
 
-        <!-- Columns 2..N: link groups -->
+        <!-- Остальные колонки: группы ссылок -->
         <ul
           v-for="(group, gi) in footer.links"
           :key="gi"
@@ -65,7 +63,7 @@ const router = useRouter()
   padding: 32px 0;
 }
 
-/* Cart summary line */
+/* Строка с суммой корзины */
 .app-footer__cart {
   display: inline-flex;
   align-items: center;
@@ -112,7 +110,7 @@ const router = useRouter()
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-top: 22px; /* aligns with body text in column 1 */
+  padding-top: 22px; /* выравнивание по тексту в колонке 1 */
 }
 .app-footer__links a {
   font-size: 13px;

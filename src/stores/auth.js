@@ -2,34 +2,20 @@ import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
 import { useCartStore } from './cart.js'
 
-/**
- * Auth / account store (Pinia).
- *
- * Demo account for the personal-area walkthrough:
- *   login : Chiff
- *   phone : 79138841508   (spaces / +7 / brackets are ignored)
- *   code  : 77777
- *
- * Bonus balance + order history are loaded from content.json
- * (the `account` section) on login.
- */
+// Хранилище входа и личного кабинета.
+// Демо-аккаунт для проверки кабинета:
+//   логин: Chiff, телефон: 79138841508, код из sms: 77777
+// Баланс бонусов и история заказов берутся из content.json при входе.
 
 const DEMO = {
-  login: 'Chiff',
   phone: '79138841508',
   code: '77777',
-  profile: {
-    name: 'Chiff',
-    phone: '+79138841508',
-    birthday: '28.05.1995',
-    email: 'chiff@mail.com'
-  }
+  // Данные профиля, которые подставятся после входа.
+  profile: { name: 'Chiff', phone: '+79138841508', birthday: '28.05.1995', email: 'chiff@mail.com' }
 }
 
-// keep only digits so "+7 (913) 884-15-08" === "79138841508"
-function normalizePhone(value) {
-  return (value || '').replace(/\D/g, '')
-}
+// Оставляем только цифры, чтобы "+7 (913) 884-15-08" === "79138841508".
+const onlyDigits = (value) => (value || '').replace(/\D/g, '')
 
 export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = ref(false)
@@ -38,29 +24,23 @@ export const useAuthStore = defineStore('auth', () => {
   const orders = ref([])
   let loaded = false
 
-  /** Load balance + order history from content.json (once). */
+  // Загружаем баланс и историю заказов из content.json (один раз).
   async function loadAccount() {
     if (loaded) return
     loaded = true
     try {
-      const res = await fetch('/data/content.json')
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const json = await res.json()
+      const json = await (await fetch('/data/content.json')).json()
       balance.value = json.account?.balance ?? 0
       orders.value = json.account?.orders ?? []
     } catch (err) {
-      console.error('Failed to load account data:', err)
+      console.error('Не удалось загрузить данные кабинета:', err)
     }
   }
 
-  /** Attempt a login. Returns { ok, message }. */
+  // Проверяем телефон и код. Возвращаем { ok, message }.
   function login(phone, code) {
-    if (normalizePhone(phone) !== DEMO.phone) {
-      return { ok: false, message: 'Неверный номер телефона' }
-    }
-    if ((code || '').trim() !== DEMO.code) {
-      return { ok: false, message: 'Неверный код из sms' }
-    }
+    if (onlyDigits(phone) !== DEMO.phone) return { ok: false, message: 'Неверный номер телефона' }
+    if ((code || '').trim() !== DEMO.code) return { ok: false, message: 'Неверный код из sms' }
     Object.assign(user, DEMO.profile)
     isLoggedIn.value = true
     loadAccount()
@@ -72,21 +52,17 @@ export const useAuthStore = defineStore('auth', () => {
     Object.assign(user, { name: '', phone: '', birthday: '', email: '' })
   }
 
-  /** Save edited profile fields. */
-  function updateProfile(profile) {
-    Object.assign(user, profile)
-  }
+  // Сохранить изменённые поля профиля.
+  const updateProfile = (profile) => Object.assign(user, profile)
 
-  /** Re-order: push every item of a past order back into the cart. */
+  // Повторить заказ — добавить все его товары обратно в корзину.
   function repeatOrder(order) {
     const cart = useCartStore()
     order.items.forEach((item) => cart.add({ ...item }))
   }
 
-  const displayName = computed(() => (isLoggedIn.value ? user.name || DEMO.login : null))
+  // Имя для шапки: если вошли — имя, иначе null (показываем «Войти»).
+  const displayName = computed(() => (isLoggedIn.value ? user.name || 'Chiff' : null))
 
-  return {
-    isLoggedIn, user, balance, orders, displayName,
-    login, logout, updateProfile, repeatOrder, loadAccount
-  }
+  return { isLoggedIn, user, balance, orders, displayName, login, logout, updateProfile, repeatOrder, loadAccount }
 })

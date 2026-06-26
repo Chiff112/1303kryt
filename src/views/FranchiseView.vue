@@ -2,7 +2,7 @@
 import FranchiseSection from '../components/sections/FranchiseSection.vue'
 import SectionDivider   from '../components/ui/SectionDivider.vue'
 
-/** FranchiseView — the «Наша франшиза» page ("/franchise"). */
+// Страница «Наша франшиза» ("/franchise").
 </script>
 
 <template>

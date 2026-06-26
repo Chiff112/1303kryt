@@ -1,3 +1,5 @@
+// Точка входа. Создаём приложение Vue, подключаем
+// Pinia (хранилище данных) и Router (переходы между страницами).
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'

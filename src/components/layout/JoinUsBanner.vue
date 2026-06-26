@@ -3,12 +3,8 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '../../stores/content.js'
 
-/**
- * JoinUsBanner — green call-to-action band at the very bottom of the
- * page: "Присоединяйтесь к Vita Juice" + social-media icons.
- *
- * All copy and social links come from `joinUs` in content.json.
- */
+// Зелёная плашка внизу страницы: «Присоединяйтесь к Vita Juice»
+// и иконки соцсетей. Тексты и ссылки берутся из content.json.
 
 const { data } = storeToRefs(useContentStore())
 const joinUs = computed(() => data.value?.joinUs ?? null)

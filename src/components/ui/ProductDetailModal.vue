@@ -4,16 +4,8 @@ import BaseButton from './BaseButton.vue'
 import HeartButton from './HeartButton.vue'
 import { useCartStore } from '../../stores/cart.js'
 
-/**
- * ProductDetailModal — opens when a product card is clicked.
- *
- * Left: large product image.
- * Right: name, selectable size chips, ingredients, nutrition per 100g,
- * shelf life, storage conditions, then price + heart + "В корзину".
- *
- * Adding from here drops the product into the shared cart and opens the
- * cart popup. Matches the Figma product-detail frame.
- */
+// Окно с подробностями о товаре: фото, состав, размер, цена,
+// пищевая ценность, сердечко и кнопка «В корзину».
 const props = defineProps({
   product: { type: Object, required: true }
 })
@@ -37,16 +29,16 @@ function close() { emit('close') }
     <div class="detail" role="dialog" aria-modal="true" :aria-label="product.title">
       <button class="detail__close" type="button" aria-label="Закрыть" @click="close">×</button>
 
-      <!-- Left: image -->
+      <!-- Слева: фото -->
       <div class="detail__media">
         <img :src="product.image" :alt="product.title" class="detail__img" />
       </div>
 
-      <!-- Right: info -->
+      <!-- Справа: информация -->
       <div class="detail__info">
         <h2 class="detail__title">{{ product.title }}</h2>
 
-        <!-- Size chips -->
+        <!-- Кнопки размера -->
         <div class="detail__sizes">
           <button
             v-for="size in sizes"
@@ -58,13 +50,13 @@ function close() { emit('close') }
           >{{ size }}</button>
         </div>
 
-        <!-- Ingredients -->
+        <!-- Состав -->
         <div class="detail__block">
           <h3 class="detail__heading">Ингридиенты</h3>
           <p class="detail__text">{{ product.ingredients }}</p>
         </div>
 
-        <!-- Nutrition -->
+        <!-- Пищевая ценность -->
         <div v-if="product.nutrition" class="detail__block">
           <h3 class="detail__heading">Пищевая ценность на 100г</h3>
           <ul class="detail__nutrition">
@@ -74,19 +66,19 @@ function close() { emit('close') }
           </ul>
         </div>
 
-        <!-- Shelf life -->
+        <!-- Срок годности -->
         <div v-if="product.shelfLife" class="detail__block">
           <h3 class="detail__heading">Срок хранения</h3>
           <p class="detail__text">{{ product.shelfLife }}</p>
         </div>
 
-        <!-- Storage -->
+        <!-- Хранение -->
         <div v-if="product.storage" class="detail__block">
           <h3 class="detail__heading">Условия хранения</h3>
           <p class="detail__text">{{ product.storage }}</p>
         </div>
 
-        <!-- Price + actions -->
+        <!-- Цена и кнопки -->
         <div class="detail__footer">
           <span class="detail__price">{{ product.price }}<span class="detail__cur">₽</span></span>
           <HeartButton :product-id="product.id" :size="28" />
@@ -139,7 +131,7 @@ function close() { emit('close') }
   z-index: 2;
 }
 
-/* Media */
+/* Фото */
 .detail__media {
   display: flex;
   align-items: center;
@@ -151,7 +143,7 @@ function close() { emit('close') }
   object-fit: contain;
 }
 
-/* Info */
+/* Информация */
 .detail__info {
   display: flex;
   flex-direction: column;
@@ -166,7 +158,7 @@ function close() { emit('close') }
   margin: 0;
 }
 
-/* Size chips */
+/* Кнопки размера */
 .detail__sizes {
   display: flex;
   gap: 22px;
@@ -186,7 +178,7 @@ function close() { emit('close') }
   border-bottom-color: var(--color-yellow);
 }
 
-/* Blocks */
+/* Блоки с текстом */
 .detail__block { display: flex; flex-direction: column; gap: 4px; }
 .detail__heading {
   font-size: 18px;
@@ -211,7 +203,7 @@ function close() { emit('close') }
 }
 .detail__nutrition span { display: inline-block; min-width: 90px; }
 
-/* Footer */
+/* Низ окна */
 .detail__footer {
   display: flex;
   align-items: center;
@@ -236,9 +228,7 @@ function close() { emit('close') }
 .detail__heart img { width: 28px; height: 26px; object-fit: contain; }
 .detail__cta { margin-left: auto; }
 
-/* ========================================================
-   Responsive
-   ======================================================== */
+/* Адаптив (под телефоны) */
 @media (max-width: 820px) {
   .detail {
     grid-template-columns: 1fr;

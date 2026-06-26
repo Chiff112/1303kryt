@@ -3,19 +3,8 @@ import { ref, computed } from 'vue'
 import BaseButton from './BaseButton.vue'
 import { useAuthStore } from '../../stores/auth.js'
 
-/**
- * LoginModal — "ВХОД НА САЙТ".
- *
- * Recreates the Figma modal as a real, working form:
- *   - Yellow header bar with title + close (×)
- *   - Имя / Телефон / код fields on dotted underlines
- *   - Two phases:
- *       1. enter name + phone → "Выслать код" (paper-plane button)
- *       2. after code is sent → "Введите код" field + "Войти" button
- *   - Inline red validation errors ("Пожалуйста введите имя", etc.)
- *
- * Emits `close` when the user dismisses it.
- */
+// Окно входа. Шаг 1 — имя и телефон, шаг 2 — код из sms.
+// Проверяет данные через стор авторизации и показывает ошибки.
 
 const emit = defineEmits(['close', 'success'])
 
@@ -27,7 +16,7 @@ const code  = ref('')
 
 const codeSent = ref(false)   // false = phase 1, true = phase 2
 const triedSubmit = ref(false)
-const authError = ref('')     // server-side style error (wrong phone/code)
+const authError = ref('')     // ошибка от стора (неверный телефон или код)
 
 const nameError  = computed(() => triedSubmit.value && !name.value.trim())
 const phoneError = computed(() => triedSubmit.value && !phone.value.trim())
@@ -59,15 +48,15 @@ function close() { emit('close') }
 <template>
   <div class="modal-overlay" @click.self="close">
     <div class="login-modal" role="dialog" aria-modal="true" aria-label="Вход на сайт">
-      <!-- Header -->
+      <!-- Шапка -->
       <div class="login-modal__header">
         <h2 class="login-modal__title">Вход на сайт</h2>
         <button class="login-modal__close" type="button" aria-label="Закрыть" @click="close">×</button>
       </div>
 
-      <!-- Body -->
+      <!-- Содержимое -->
       <div class="login-modal__body">
-        <!-- Name -->
+        <!-- Имя -->
         <div class="login-field">
           <label class="login-field__label" for="login-name">Имя</label>
           <div class="login-field__control">
@@ -83,7 +72,7 @@ function close() { emit('close') }
           </div>
         </div>
 
-        <!-- Phone -->
+        <!-- Телефон -->
         <div class="login-field">
           <label class="login-field__label" for="login-phone">Телефон</label>
           <div class="login-field__control">
@@ -99,7 +88,7 @@ function close() { emit('close') }
           </div>
         </div>
 
-        <!-- Phase 1: send code -->
+        <!-- Шаг 1: выслать код -->
         <template v-if="!codeSent">
           <div class="login-field login-field--action">
             <span class="login-field__label">Выслать код</span>
@@ -115,7 +104,7 @@ function close() { emit('close') }
           </button>
         </template>
 
-        <!-- Phase 2: enter code -->
+        <!-- Шаг 2: ввести код -->
         <template v-else>
           <div class="login-field">
             <label class="login-field__label" for="login-code">Введите код</label>
@@ -161,7 +150,7 @@ function close() { emit('close') }
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
-/* Header */
+/* Шапка */
 .login-modal__header {
   background: var(--color-yellow);
   padding: 18px 24px;
@@ -188,7 +177,7 @@ function close() { emit('close') }
   justify-content: center;
 }
 
-/* Body */
+/* Содержимое */
 .login-modal__body {
   padding: 24px;
   position: relative;
@@ -230,7 +219,7 @@ function close() { emit('close') }
   margin-top: -2px;
 }
 
-/* "Выслать код" + agreement text */
+/* «Выслать код» и текст согласия */
 .login-field--action { align-items: flex-start; }
 .login-modal__agreement {
   flex: 1 1 auto;
@@ -240,7 +229,7 @@ function close() { emit('close') }
   margin: 0;
 }
 
-/* Paper-plane send button */
+/* Кнопка-самолётик «отправить» */
 .login-modal__send {
   display: flex;
   align-items: center;
@@ -256,7 +245,7 @@ function close() { emit('close') }
 }
 .login-modal__send:hover { background: #FFC638; }
 
-/* Submit */
+/* Кнопка входа */
 .login-modal__submit {
   display: flex;
   justify-content: flex-end;

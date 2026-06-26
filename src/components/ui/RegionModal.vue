@@ -3,18 +3,8 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '../../stores/content.js'
 
-/**
- * RegionModal — "ВАШ РЕГИОН".
- *
- * Recreates the Figma modal:
- *   - Yellow header with title + close (×)
- *   - "ВАШ ГОРОД {current}?" with a yellow "ДА" confirm pill
- *   - "НЕТ ВЫБРАТЬ ИЗ СПИСКА" + a 3-column city list
- *   - Clicking a city (or ДА) selects the region and closes; the chosen
- *     city is highlighted yellow.
- *
- * Cities and the current region come from /data/content.json.
- */
+// Окно выбора региона («Ваш регион»). Показывает текущий город,
+// кнопку «Да» и список городов. Города берутся из content.json.
 
 const emit = defineEmits(['close', 'select'])
 
@@ -36,13 +26,13 @@ function close() { emit('close') }
 <template>
   <div class="modal-overlay" @click.self="close">
     <div class="region-modal" role="dialog" aria-modal="true" aria-label="Ваш регион">
-      <!-- Header -->
+      <!-- Шапка -->
       <div class="region-modal__header">
         <h2 class="region-modal__title">Ваш регион</h2>
         <button class="region-modal__close" type="button" aria-label="Закрыть" @click="close">×</button>
       </div>
 
-      <!-- Body -->
+      <!-- Содержимое -->
       <div class="region-modal__body">
         <p class="region-modal__question">Ваш город {{ current }}?</p>
         <button class="region-modal__yes" type="button" @click="confirm">Да</button>
@@ -84,7 +74,7 @@ function close() { emit('close') }
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
-/* Header */
+/* Шапка */
 .region-modal__header {
   background: var(--color-yellow);
   padding: 18px 24px;
@@ -111,7 +101,7 @@ function close() { emit('close') }
   justify-content: center;
 }
 
-/* Body */
+/* Содержимое */
 .region-modal__body { padding: 24px; }
 
 .region-modal__question {

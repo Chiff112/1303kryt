@@ -1,9 +1,5 @@
 <script setup>
-/**
- * SectionTitle — uppercase centered title used at the top of every
- * page section: "Наша продукция", "Хиты продаж", "Доставка и оплата",
- * "Наша система лояльности", etc.
- */
+// Заголовок секции: крупный, по центру, заглавными буквами.
 defineProps({
   tag: { type: String, default: 'h2' }
 })

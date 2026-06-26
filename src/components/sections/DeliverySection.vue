@@ -5,20 +5,7 @@ import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import InfoTile from '../ui/InfoTile.vue'
 
-/**
- * DeliverySection — "Доставка и оплата".
- *
- * Matches the Figma frame:
- *   - Green→yellow gradient panel (`bg-delivery.png`).
- *   - Left column: "Зона доставки" (zone legend + map),
- *     "Варианты оплаты" (3 InfoTiles), "Способы доставки" (2 InfoTiles).
- *   - Right column: delivery boy holding boxes, flush to the bottom.
- *   - A self-contained speech bubble (cloud + "Быстро и бесплатно!"
- *     baked into one PNG, tilted ~45°) sits upper-left of the boy,
- *     its tail pointing down-right toward his face.
- *
- * Data comes from /data/content.json.
- */
+// Секция «Доставка и оплата»: карта зон, способы оплаты и доставки.
 
 const { data } = storeToRefs(useContentStore())
 
@@ -35,7 +22,7 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 
     <div class="delivery__panel">
       <div class="delivery__panel-inner container">
-        <!-- ============ LEFT: info ============ -->
+        <!-- ============ Слева: информация ============ -->
         <div class="delivery__info">
           <h3 class="delivery__heading">Зона доставки</h3>
           <ul class="delivery__zones">
@@ -71,14 +58,14 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
           </div>
         </div>
 
-        <!-- ============ RIGHT: delivery boy + speech bubble ============ -->
+        <!-- ============ Справа: курьер и облако ============ -->
         <div class="delivery__hero">
           <img
             src="/images/delivery-boy.png"
             alt="Курьер с коробками заказа"
             class="delivery__hero-img"
           />
-          <!-- Complete bubble (cloud + phrase, ~45° tilt baked in) -->
+          <!-- Готовое облако (картинка с текстом и наклоном) -->
           <img
             src="/images/bubble-delivery.png"
             alt="Быстро и бесплатно!"
@@ -114,7 +101,7 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   align-items: stretch;
 }
 
-/* ============ Left column ============ */
+/* ============ Левая колонка ============ */
 .delivery__info {
   display: flex;
   flex-direction: column;
@@ -175,7 +162,7 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 .delivery__options--3 { grid-template-columns: repeat(3, 1fr); }
 .delivery__options--2 { grid-template-columns: repeat(2, 1fr); }
 
-/* ============ Right column ============ */
+/* ============ Правая колонка ============ */
 .delivery__hero {
   position: relative;
   display: flex;
@@ -188,10 +175,10 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   max-height: 600px;
   object-fit: contain;
   object-position: center bottom;
-  margin-bottom: -32px; /* boy sits on the panel's bottom edge */
+  margin-bottom: -32px; /* курьер стоит на нижнем крае плашки */
 }
 
-/* ----- Speech bubble (one self-contained image, ~45° tilt baked in) ----- */
+/* ----- Облако (готовая картинка с наклоном) ----- */
 .delivery__bubble {
   position: absolute;
   z-index: 3;
@@ -203,9 +190,7 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
-/* ========================================================
-   Responsive
-   ======================================================== */
+/* Адаптив (под телефоны) */
 @media (max-width: 1023px) {
   .delivery__panel-inner {
     grid-template-columns: 1fr;

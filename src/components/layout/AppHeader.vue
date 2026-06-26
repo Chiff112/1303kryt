@@ -9,19 +9,8 @@ import LogoMark from '../ui/LogoMark.vue'
 import LoginModal from '../ui/LoginModal.vue'
 import RegionModal from '../ui/RegionModal.vue'
 
-/**
- * AppHeader — site header.
- *
- * Desktop (>=1024px): a single horizontal row sitting on a dashed line.
- *   Logo | Region + main category links (each with a color dot that
- *   fills on hover) | secondary links (dark dots) | Корзина | Никита/Войти
- *   Region / Корзина / login text turn yellow on hover or when active.
- *
- * Mobile/tablet: logo + cart + burger that opens a slide-in drawer.
- *
- * Region picker and login open real modal components.
- * All nav data comes from /data/content.json.
- */
+// Шапка сайта: логотип, выбор региона, меню, корзина и вход.
+// Логотип наполовину свисает на секцию ниже. Переходы — через роутер.
 
 const { data } = storeToRefs(useContentStore())
 
@@ -32,26 +21,26 @@ const drawerOpen = ref(false)
 function toggleDrawer() { drawerOpen.value = !drawerOpen.value }
 function closeDrawer()  { drawerOpen.value = false }
 
-// Modals
+// Окна (регион и вход)
 const showLogin  = ref(false)
 const showRegion = ref(false)
 
-// Region + auth state
+// Состояние выбора региона и входа
 const currentRegion = computed(() => data.value?.regions?.current ?? 'Ваш регион')
 const selectedRegion = ref(null)
 const regionLabel = computed(() => selectedRegion.value || 'Ваш регион')
 
-const userName = computed(() => auth.displayName) // null = not logged in
+const userName = computed(() => auth.displayName) // null — значит не вошли
 
-// Shared stores
+// Общие сторы
 const cart = useCartStore()
 const auth = useAuthStore()
 
-// Router
+// Роутер
 const router = useRouter()
 const route = useRoute()
 
-// active-state helpers for nav highlighting
+// помощники для подсветки активного пункта меню
 const isAccount = computed(() => route.path === '/account')
 function isSecondaryActive(id) {
   return id === 'franchise' && route.path === '/franchise'
@@ -64,27 +53,27 @@ function goJuices()   { router.push('/juices');    closeDrawer() }
 function goCart()     { router.push('/cart');      closeDrawer() }
 function goFranchise(){ router.push('/franchise'); closeDrawer() }
 
-// Click on the user chip: logged in → personal area, otherwise login.
+// Клик по имени: если вошли — в кабинет, иначе открываем вход.
 function onUserClick() {
   if (auth.isLoggedIn) { router.push('/account'); closeDrawer() }
   else openLogin()
 }
-// After a successful login, go straight to the personal area.
+// После успешного входа сразу ведём в кабинет.
 function onLoginSuccess() { router.push('/account') }
 </script>
 
 <template>
   <header class="header">
     <div class="header__inner container">
-      <!-- Logo (LogoMark is a RouterLink to "/") — straddles the header
+      <!-- Логотип (ссылка на «/») — наполовину свисает из шапки
            edge, hanging halfway over the section below. -->
       <div class="header__logo">
         <LogoMark :size="120" />
       </div>
 
-      <!-- ============= DESKTOP LAYOUT ============= -->
+      <!-- ============= ВЕРСТКА ДЛЯ КОМПЬЮТЕРА ============= -->
       <div class="header__content">
-        <!-- Top row: region + actions -->
+        <!-- Верхний ряд: регион и кнопки -->
         <div class="header__top">
           <button
             class="header__chip header__chip--region"
@@ -115,7 +104,7 @@ function onLoginSuccess() { router.push('/account') }
           </div>
         </div>
 
-        <!-- Bottom row: nav on the dashed line -->
+        <!-- Нижний ряд: меню на пунктирной линии -->
         <nav class="header__nav" aria-label="Навигация">
           <ul class="header__nav-list">
             <li v-for="item in mainNav" :key="item.id" class="header__nav-item">
@@ -148,7 +137,7 @@ function onLoginSuccess() { router.push('/account') }
         </nav>
       </div>
 
-      <!-- ============= MOBILE: cart + burger ============= -->
+      <!-- ============= ТЕЛЕФОН: корзина и бургер ============= -->
       <div class="header__mobile-actions">
         <button class="header__mobile-cart" type="button" aria-label="Корзина" @click="goCart">
           <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
@@ -172,7 +161,7 @@ function onLoginSuccess() { router.push('/account') }
       </div>
     </div>
 
-    <!-- ============= MOBILE DRAWER ============= -->
+    <!-- ============= ВЫЕЗЖАЮЩЕЕ МЕНЮ (ТЕЛЕФОН) ============= -->
     <transition name="drawer">
       <div v-if="drawerOpen" class="drawer" @click.self="closeDrawer">
         <div class="drawer__panel">
@@ -219,7 +208,7 @@ function onLoginSuccess() { router.push('/account') }
       </div>
     </transition>
 
-    <!-- ============= MODALS ============= -->
+    <!-- ============= ОКНА ============= -->
     <LoginModal v-if="showLogin" @close="showLogin = false" @success="onLoginSuccess" />
     <RegionModal v-if="showRegion" @close="showRegion = false" @select="onRegionSelect" />
   </header>
@@ -243,9 +232,9 @@ function onLoginSuccess() { router.push('/account') }
 }
 .header__logo {
   flex: 0 0 auto;
-  align-self: flex-start;       /* opt out of stretch */
+  align-self: flex-start;       /* не растягиваться по высоте */
   line-height: 0;
-  margin-bottom: -46px;         /* lets the lower half hang below the header */
+  margin-bottom: -46px;         /* нижняя половина свисает из шапки */
   position: relative;
   z-index: 60;
   cursor: pointer;
@@ -260,7 +249,7 @@ function onLoginSuccess() { router.push('/account') }
   min-width: 0;
 }
 
-/* ---------- Top row ---------- */
+/* ---------- Верхний ряд ---------- */
 .header__top {
   display: flex;
   align-items: center;
@@ -273,7 +262,7 @@ function onLoginSuccess() { router.push('/account') }
   gap: 28px;
 }
 
-/* Chip = region / cart / login text+icon button */
+/* Кнопка с текстом и иконкой: регион / корзина / вход */
 .header__chip {
   display: inline-flex;
   align-items: center;
@@ -298,7 +287,7 @@ function onLoginSuccess() { router.push('/account') }
   color: var(--color-yellow-dark);
 }
 
-/* ---------- Bottom nav ---------- */
+/* ---------- Нижнее меню ---------- */
 .header__nav {
   position: relative;
   padding: 14px 0 4px;
@@ -328,7 +317,7 @@ function onLoginSuccess() { router.push('/account') }
   transition: color var(--t-fast);
   white-space: nowrap;
 }
-/* The dot under each item: gray by default, fills with --dot on hover */
+/* Точка под пунктом: серая, при наведении красится в --dot */
 .header__dot {
   width: 14px;
   height: 14px;
@@ -341,12 +330,12 @@ function onLoginSuccess() { router.push('/account') }
   background: var(--dot);
   transform: scale(1.1);
 }
-/* secondary links: text turns to its (dark) dot color, dot fills dark */
+/* правое меню: при наведении/активности текст и точка темнеют */
 .header__nav-link--secondary:hover .header__nav-text { color: var(--dot); }
 .header__nav-link--secondary.is-active .header__dot { background: var(--dot); }
 .header__nav-link--secondary.is-active .header__nav-text { color: var(--dot); }
 
-/* ---------- Mobile actions ---------- */
+/* ---------- Кнопки для телефона ---------- */
 .header__mobile-actions { display: none; }
 .header__mobile-cart {
   position: relative;
@@ -367,7 +356,7 @@ function onLoginSuccess() { router.push('/account') }
   justify-content: center;
 }
 
-/* Burger */
+/* Кнопка-бургер */
 .header__burger {
   width: 40px; height: 40px;
   display: inline-flex;
@@ -394,7 +383,7 @@ function onLoginSuccess() { router.push('/account') }
 .header__burger-bars.is-open span:nth-child(2) { opacity: 0; }
 .header__burger-bars.is-open span:nth-child(3) { top: 8px; transform: rotate(-45deg); }
 
-/* ---------- Responsive ---------- */
+/* ---------- Адаптив (под телефоны) ---------- */
 @media (max-width: 1199px) and (min-width: 1024px) {
   .header__nav-list { gap: 14px; }
   .header__nav-text { font-size: 12px; }
@@ -413,7 +402,7 @@ function onLoginSuccess() { router.push('/account') }
   .header__inner { gap: 12px; align-items: center; }
 }
 
-/* ---------- Drawer ---------- */
+/* ---------- Выезжающее меню ---------- */
 .drawer {
   position: fixed;
   inset: 0;
@@ -491,7 +480,7 @@ function onLoginSuccess() { router.push('/account') }
 }
 .drawer__login:hover { background: #FFC638; }
 
-/* Drawer transition */
+/* Анимация выезжающего меню */
 .drawer-enter-active, .drawer-leave-active { transition: opacity var(--t-base); }
 .drawer-enter-from, .drawer-leave-to       { opacity: 0; }
 .drawer-enter-active .drawer__panel,

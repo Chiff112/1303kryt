@@ -13,24 +13,24 @@
    CSS variables — design tokens
    ================================ */
 :root {
-  /* Colors from the Figma design */
-  --color-green:       #6EA84F;   /* primary brand green */
+  /* Цвета из макета Figma */
+  --color-green:       #6EA84F;   /* основной зелёный */
   --color-green-dark:  #5C9241;
   --color-green-light: #82B864;
-  --color-yellow:      #FBBA1D;   /* CTA yellow */
+  --color-yellow:      #FBBA1D;   /* жёлтый для кнопок */
   --color-yellow-dark: #E5A815;
-  --color-red:         #E83A2E;   /* hero red background */
+  --color-red:         #E83A2E;   /* красный фон баннера */
   --color-text:        #2A2A2A;
   --color-text-muted:  #6E6E6E;
   --color-bg:          #FFFFFF;
   --color-border:      #E5E5E5;
   --color-dashed:      #BDBDBD;
 
-  /* Typography */
+  /* Шрифты */
   --font-base:   'Montserrat', 'Segoe UI', Tahoma, sans-serif;
   --font-script: 'Caveat', 'Segoe Script', cursive;
 
-  /* Layout */
+  /* Размеры и сетка */
   --container-max: 1280px;
   --container-pad: 20px;
   --radius-sm: 8px;
@@ -38,11 +38,11 @@
   --radius-lg: 24px;
   --radius-pill: 999px;
 
-  /* Shadows */
+  /* Тени */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
 
-  /* Transitions */
+  /* Плавные переходы */
   --t-fast: 0.15s ease;
   --t-base: 0.25s ease;
 }
@@ -84,7 +84,7 @@ h1, h2, h3, h4, h5, h6, p { margin: 0; }
   padding: 0 var(--container-pad);
 }
 
-/* Section title used across multiple sections */
+/* Заголовок секции — используется в нескольких местах */
 .section-title {
   text-align: center;
   font-size: clamp(22px, 4vw, 36px);
@@ -95,7 +95,7 @@ h1, h2, h3, h4, h5, h6, p { margin: 0; }
   margin-bottom: 32px;
 }
 
-/* Accessibility */
+/* Доступность */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -107,14 +107,9 @@ h1, h2, h3, h4, h5, h6, p { margin: 0; }
   border: 0;
 }
 
-/* Google font import via link could be used instead;
-   here we keep a system fallback so the build runs offline. */
+/* Шрифты подключены через пакеты; системный запасной шрифт
+   позволяет собирать проект без интернета. */
 
-/* ================================
-   Responsive breakpoints (use in components):
-   - mobile-first
-   - >= 640px  small tablet
-   - >= 768px  tablet
-   - >= 1024px laptop
-   - >= 1280px desktop
-   ================================ */
+/* Контрольные ширины экрана (для адаптива в компонентах):
+   640px — маленький планшет, 768px — планшет,
+   1024px — ноутбук, 1280px — компьютер. */

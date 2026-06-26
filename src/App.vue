@@ -1,16 +1,10 @@
 <script setup>
+// Постоянный каркас сайта. Шапка, подвал, баннер и попап корзины
+// видны всегда, а <RouterView> просто меняет текущую страницу.
 import AppHeader    from './components/layout/AppHeader.vue'
 import AppFooter    from './components/layout/AppFooter.vue'
 import JoinUsBanner from './components/layout/JoinUsBanner.vue'
 import CartPopup    from './components/ui/CartPopup.vue'
-
-/**
- * App — the persistent layout shell.
- *
- * Header, footer, join-us banner and the slide-in cart popup stay
- * mounted for the whole session; <RouterView> swaps the page content
- * (home / juices / cart / account / franchise).
- */
 </script>
 
 <template>
@@ -24,7 +18,7 @@ import CartPopup    from './components/ui/CartPopup.vue'
     <AppFooter />
     <JoinUsBanner />
 
-    <!-- Slide-in cart popup (quick add-to-cart feedback) -->
+    <!-- Всплывающая корзина (показывается после добавления товара) -->
     <CartPopup />
   </div>
 </template>

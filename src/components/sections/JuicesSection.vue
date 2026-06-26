@@ -5,15 +5,7 @@ import { useContentStore } from '../../stores/content.js'
 import JuiceCard from '../ui/JuiceCard.vue'
 import ProductDetailModal from '../ui/ProductDetailModal.vue'
 
-/**
- * JuicesSection — the "СОКИ" category page.
- *
- * Green title band ("СОКИ") followed by a responsive product grid.
- * Clicking any card opens a ProductDetailModal showing the full
- * composition (ingredients, nutrition, storage, etc.).
- *
- * Products come from /data/content.json (`juices`).
- */
+// Страница каталога соков: сетка карточек и окно с подробностями.
 
 const { data } = storeToRefs(useContentStore())
 const juices = computed(() => data.value?.juices ?? [])
@@ -25,12 +17,12 @@ function closeDetail()       { detailProduct.value = null }
 
 <template>
   <section class="juices" id="juices-page">
-    <!-- Green title band -->
+    <!-- Зелёная плашка с заголовком -->
     <div class="juices__band">
       <h1 class="juices__title">Соки</h1>
     </div>
 
-    <!-- Product grid -->
+    <!-- Сетка товаров -->
     <div class="container">
       <div class="juices__grid">
         <JuiceCard
@@ -42,7 +34,7 @@ function closeDetail()       { detailProduct.value = null }
       </div>
     </div>
 
-    <!-- Product detail modal -->
+    <!-- Окно с подробностями о товаре -->
     <ProductDetailModal
       v-if="detailProduct"
       :product="detailProduct"
@@ -57,7 +49,7 @@ function closeDetail()       { detailProduct.value = null }
   padding-bottom: 56px;
 }
 
-/* Green title band */
+/* Зелёная плашка с заголовком */
 .juices__band {
   background: var(--color-green);
   padding: 28px 20px;
@@ -73,7 +65,7 @@ function closeDetail()       { detailProduct.value = null }
   margin: 0;
 }
 
-/* Grid */
+/* Сетка */
 .juices__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

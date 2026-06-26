@@ -2,18 +2,9 @@
 import { useCartStore } from '../../stores/cart.js'
 import { useRouter } from 'vue-router'
 
-/**
- * CartPopup — slide-in basket panel.
- *
- * Lists each cart item with image, name, volume, ingredients, a
- * quantity stepper (− qty +), line price, and a delete (trash) button.
- * Dashed dividers separate items. A free "Бутылочка" gift line always
- * shows at 0 ₽, and a yellow "СУММА ЗАКАЗА" bar pins the total to the
- * bottom — all matching the Figma design.
- *
- * Reads/writes the shared cart store, so it stays in sync with the
- * header/footer summaries and the product cards.
- */
+// Всплывающая корзина сбоку. Показывает товары, счётчик количества,
+// удаление, подарок-бутылочку и кнопку «Оформить заказ».
+// Данные берутся из общего стора корзины.
 
 const cart = useCartStore()
 const router = useRouter()
@@ -28,19 +19,19 @@ function goCheckout() {
   <transition name="cart">
     <div v-if="cart.isOpen" class="cart" @click.self="cart.close()">
       <aside class="cart__panel" role="dialog" aria-label="Корзина">
-        <!-- Header -->
+        <!-- Шапка -->
         <div class="cart__head">
           <h2 class="cart__title">Корзина</h2>
           <button class="cart__close" type="button" aria-label="Закрыть" @click="cart.close()">×</button>
         </div>
 
-        <!-- Empty state -->
+        <!-- Пустая корзина -->
         <div v-if="cart.isEmpty" class="cart__empty">
           <p>Ваша корзина пуста</p>
           <span>Добавьте напитки из каталога</span>
         </div>
 
-        <!-- Items (scrollable) -->
+        <!-- Список товаров (с прокруткой) -->
         <div v-else class="cart__items">
           <div v-for="item in cart.items" :key="item.id" class="cart-item">
             <img :src="item.image" :alt="item.title" class="cart-item__img" />
@@ -71,7 +62,7 @@ function goCheckout() {
             </div>
           </div>
 
-          <!-- Free bottle gift line -->
+          <!-- Подарок-бутылочка -->
           <div class="cart__gift">
             <span class="cart__gift-label">Бутылочка</span>
             <img src="/images/gift.png" alt="" class="cart__gift-icon" />
@@ -79,7 +70,7 @@ function goCheckout() {
           </div>
         </div>
 
-        <!-- Total bar -->
+        <!-- Полоса с итоговой суммой -->
         <div v-if="!cart.isEmpty" class="cart__total">
           <span class="cart__total-label">Сумма заказа</span>
           <span class="cart__total-value">{{ cart.totalPrice }}₽</span>
@@ -111,7 +102,7 @@ function goCheckout() {
   box-shadow: -8px 0 30px rgba(0, 0, 0, 0.18);
 }
 
-/* Header */
+/* Шапка */
 .cart__head {
   display: flex;
   align-items: center;
@@ -136,7 +127,7 @@ function goCheckout() {
   justify-content: center;
 }
 
-/* Empty */
+/* Пустая корзина */
 .cart__empty {
   flex: 1 1 auto;
   display: flex;
@@ -156,7 +147,7 @@ function goCheckout() {
   color: var(--color-text);
 }
 
-/* Items list (scrollable) */
+/* Список товаров (с прокруткой) */
 .cart__items {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -259,7 +250,7 @@ function goCheckout() {
   font-weight: 800;
 }
 
-/* Gift line */
+/* Строка-подарок */
 .cart__gift {
   display: flex;
   align-items: center;
@@ -279,7 +270,7 @@ function goCheckout() {
   font-weight: 800;
 }
 
-/* Total bar */
+/* Полоса с итоговой суммой */
 .cart__total {
   flex: 0 0 auto;
   display: flex;
@@ -312,7 +303,7 @@ function goCheckout() {
 }
 .cart__checkout:hover { background: #000; }
 
-/* Transition */
+/* Анимация появления */
 .cart-enter-active, .cart-leave-active { transition: opacity var(--t-base); }
 .cart-enter-from, .cart-leave-to       { opacity: 0; }
 .cart-enter-active .cart__panel,
