@@ -10,6 +10,7 @@ import { useCart } from '../../composables/useCart.js'
 const { data } = useContent()
 const footer = computed(() => data.value?.footer ?? null)
 const cart = useCart()
+const emit = defineEmits(['navigate'])
 </script>
 
 <template>
@@ -20,7 +21,7 @@ const cart = useCart()
         v-if="cart.count.value"
         class="app-footer__cart"
         type="button"
-        @click="cart.open()"
+        @click="emit('navigate', 'cart')"
       >
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
           <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>

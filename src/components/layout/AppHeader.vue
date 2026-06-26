@@ -50,6 +50,7 @@ function openLogin()  { showLogin.value = true;  closeDrawer() }
 function openRegion() { showRegion.value = true; closeDrawer() }
 function goJuices()   { emit('navigate', 'juices'); closeDrawer() }
 function goHome()     { emit('navigate', 'home');   closeDrawer() }
+function goCart()     { emit('navigate', 'cart');   closeDrawer() }
 </script>
 
 <template>
@@ -76,7 +77,7 @@ function goHome()     { emit('navigate', 'home');   closeDrawer() }
           </button>
 
           <div class="header__actions">
-            <button class="header__chip" type="button" @click="cart.open()">
+            <button class="header__chip" type="button" @click="goCart">
               <span>Корзина ({{ cart.count.value }})</span>
               <svg class="header__cart-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                 <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -125,7 +126,7 @@ function goHome()     { emit('navigate', 'home');   closeDrawer() }
 
       <!-- ============= MOBILE: cart + burger ============= -->
       <div class="header__mobile-actions">
-        <button class="header__mobile-cart" type="button" aria-label="Корзина" @click="cart.open()">
+        <button class="header__mobile-cart" type="button" aria-label="Корзина" @click="goCart">
           <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="9" cy="20" r="1.4" fill="currentColor"/>

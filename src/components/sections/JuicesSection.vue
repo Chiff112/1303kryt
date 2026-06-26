@@ -1,19 +1,25 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useContent } from '../../composables/useContent.js'
 import JuiceCard from '../ui/JuiceCard.vue'
+import ProductDetailModal from '../ui/ProductDetailModal.vue'
 
 /**
  * JuicesSection — the "СОКИ" category page.
  *
- * Green title band ("СОКИ") followed by a responsive product grid
- * (4 columns on desktop, 3 / 2 / 1 as the screen narrows).
+ * Green title band ("СОКИ") followed by a responsive product grid.
+ * Clicking any card opens a ProductDetailModal showing the full
+ * composition (ingredients, nutrition, storage, etc.).
  *
  * Products come from /data/content.json (`juices`).
  */
 
 const { data } = useContent()
 const juices = computed(() => data.value?.juices ?? [])
+
+const detailProduct = ref(null)
+function openDetail(product) { detailProduct.value = product }
+function closeDetail()       { detailProduct.value = null }
 </script>
 
 <template>
@@ -30,9 +36,17 @@ const juices = computed(() => data.value?.juices ?? [])
           v-for="product in juices"
           :key="product.id"
           :product="product"
+          @open-detail="openDetail"
         />
       </div>
     </div>
+
+    <!-- Product detail modal -->
+    <ProductDetailModal
+      v-if="detailProduct"
+      :product="detailProduct"
+      @close="closeDetail"
+    />
   </section>
 </template>
 

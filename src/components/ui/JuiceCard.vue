@@ -1,18 +1,19 @@
 <script setup>
 import BaseButton from './BaseButton.vue'
+import HeartButton from './HeartButton.vue'
 import { useCart } from '../../composables/useCart.js'
 
 /**
  * JuiceCard — a product card on the category (juices) page.
  *
- * White card that lifts on hover. Shows the product image, optional
- * "+N б" bonus badge, title, volume, price, a heart (wishlist), and a
- * yellow "В корзину" button that adds the product to the shared cart
- * and opens the cart popup.
+ * White card that lifts on hover. Clicking the card body opens the
+ * product detail modal. The "В корзину" button and the heart act
+ * independently (they don't open the modal).
  */
 const props = defineProps({
   product: { type: Object, required: true }
 })
+const emit = defineEmits(['open-detail'])
 
 const cart = useCart()
 
@@ -20,10 +21,13 @@ function addToCart() {
   cart.add(props.product)
   cart.open()
 }
+function openDetail() {
+  emit('open-detail', props.product)
+}
 </script>
 
 <template>
-  <article class="juice-card">
+  <article class="juice-card" @click="openDetail">
     <div class="juice-card__media">
       <img :src="product.image" :alt="product.title" class="juice-card__img" />
       <span v-if="product.bonus > 0" class="juice-card__bonus">+{{ product.bonus }} б</span>
@@ -34,12 +38,10 @@ function addToCart() {
 
     <div class="juice-card__price-row">
       <span class="juice-card__price">{{ product.price }}<span class="juice-card__cur">₽</span></span>
-      <button class="juice-card__heart" type="button" aria-label="В избранное">
-        <img src="/images/heart-outline.png" alt="" />
-      </button>
+      <HeartButton :product-id="product.id" :size="22" />
     </div>
 
-    <BaseButton variant="primary" size="md" class="juice-card__cta" @click="addToCart">
+    <BaseButton variant="primary" size="md" class="juice-card__cta" @click.stop="addToCart">
       В корзину
     </BaseButton>
   </article>
@@ -54,6 +56,7 @@ function addToCart() {
   background: #fff;
   border-radius: var(--radius-md);
   padding: 24px 20px 28px;
+  cursor: pointer;
   transition: transform var(--t-base), box-shadow var(--t-base);
 }
 .juice-card:hover {

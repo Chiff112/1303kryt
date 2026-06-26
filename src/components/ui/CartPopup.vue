@@ -15,6 +15,12 @@ import { useCart } from '../../composables/useCart.js'
  */
 
 const cart = useCart()
+const emit = defineEmits(['checkout'])
+
+function goCheckout() {
+  cart.close()
+  emit('checkout')
+}
 </script>
 
 <template>
@@ -77,6 +83,9 @@ const cart = useCart()
           <span class="cart__total-label">Сумма заказа</span>
           <span class="cart__total-value">{{ cart.totalPrice.value }}₽</span>
         </div>
+        <button v-if="!cart.isEmpty.value" class="cart__checkout" type="button" @click="goCheckout">
+          Оформить заказ
+        </button>
       </aside>
     </div>
   </transition>
@@ -288,6 +297,19 @@ const cart = useCart()
   font-size: 22px;
   font-weight: 800;
 }
+.cart__checkout {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 18px;
+  background: var(--color-text);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background var(--t-fast);
+}
+.cart__checkout:hover { background: #000; }
 
 /* Transition */
 .cart-enter-active, .cart-leave-active { transition: opacity var(--t-base); }

@@ -9,16 +9,18 @@ import BestSellersSection from '../components/sections/BestSellersSection.vue'
 import DeliverySection    from '../components/sections/DeliverySection.vue'
 import LoyaltySection     from '../components/sections/LoyaltySection.vue'
 import JuicesSection      from '../components/sections/JuicesSection.vue'
+import CartPage           from '../components/sections/CartPage.vue'
 import SectionDivider     from '../components/ui/SectionDivider.vue'
 import CartPopup          from '../components/ui/CartPopup.vue'
 
 /**
- * HomeView — top-level page.
+ * HomeView — top-level page with a lightweight `view` switch between:
+ *   - 'home'   : the landing page
+ *   - 'juices' : the СОКИ category page
+ *   - 'cart'   : the full КОРЗИНА → ОФОРМЛЕНИЕ → ОПЛАТА checkout flow
  *
- * A lightweight `view` switch toggles between the landing page ("home")
- * and the juices category page ("juices") without a router, keeping the
- * project within the "no extra frameworks" rule. The header emits
- * `navigate` to drive it.
+ * No router is used, keeping the project within the "no extra
+ * frameworks" rule. The header and footer emit `navigate`.
  */
 const view = ref('home')
 
@@ -57,10 +59,16 @@ function navigate(target) {
       <SectionDivider />
     </main>
 
-    <AppFooter />
+    <!-- Full cart / checkout flow -->
+    <main v-else-if="view === 'cart'">
+      <CartPage @home="navigate('home')" />
+      <SectionDivider />
+    </main>
+
+    <AppFooter @navigate="navigate" />
     <JoinUsBanner />
 
-    <!-- Cart popup (shared across all views) -->
-    <CartPopup />
+    <!-- Slide-in cart popup (quick add-to-cart feedback) -->
+    <CartPopup @checkout="navigate('cart')" />
   </div>
 </template>
