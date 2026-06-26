@@ -1,7 +1,8 @@
 <script setup>
 import AppHeader from '../components/layout/AppHeader.vue'
 import HeroSection from '../components/sections/HeroSection.vue'
-// Following sections will be added one by one
+import ProductsSection from '../components/sections/ProductsSection.vue'
+import BestSellersSection from '../components/sections/BestSellersSection.vue'
 </script>
 
 <template>
@@ -10,10 +11,10 @@ import HeroSection from '../components/sections/HeroSection.vue'
 
     <main>
       <HeroSection />
+      <ProductsSection />
+      <BestSellersSection />
 
-      <!-- Step 2 done. Following steps will add:
-             - CategoriesSection (Step 3 — "Наша продукция")
-             - BestSellersSection (Step 4 — "Хиты продаж")
+      <!-- Step 4 done. Next:
              - DeliverySection (Step 5 — "Доставка и оплата")
              - LoyaltySection (Step 6 — "Наша система лояльности")
              - AppFooter + JoinUsBanner (Step 7)

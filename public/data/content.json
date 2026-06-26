@@ -4,7 +4,7 @@
     { "id": "mix",      "title": "Миксы",        "image": "/images/cat-smoothie.png" },
     { "id": "smoothie", "title": "Смузи",        "image": "/images/cat-lassi.png" },
     { "id": "detox",    "title": "Детоксы",      "image": "/images/cat-detox.png" },
-    { "id": "lassi",    "title": "Ласси",        "image": "/images/cat-juice.png" },
+    { "id": "lassi",    "title": "Ласси",        "image": "/images/cat-smoothie.png" },
     { "id": "bowl",     "title": "Боулы",        "image": "/images/cat-bowl.png" },
     { "id": "salad",    "title": "Салаты",       "image": "/images/cat-salad.png" },
     { "id": "healthy",  "title": "Здоровая еда", "image": "/images/cat-healthy.png" }
