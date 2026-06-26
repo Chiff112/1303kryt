@@ -1,5 +1,5 @@
 <script setup>
-import { useCart } from '../../composables/useCart.js'
+import { useCartStore } from '../../stores/cart.js'
 
 /**
  * HeartButton — wishlist toggle.
@@ -12,7 +12,7 @@ const props = defineProps({
   size:      { type: Number, default: 24 }
 })
 
-const cart = useCart()
+const cart = useCartStore()
 
 function toggle() {
   cart.toggleFavorite(props.productId)

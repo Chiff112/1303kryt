@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import ProductCard from '../ui/ProductCard.vue'
 
@@ -16,7 +17,7 @@ import ProductCard from '../ui/ProductCard.vue'
  * All products come from /data/content.json (`bestSellers`).
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const products = computed(() => data.value?.bestSellers ?? [])
 
 const currentIndex = ref(0)

@@ -1,7 +1,7 @@
 <script setup>
 import BaseButton from './BaseButton.vue'
 import HeartButton from './HeartButton.vue'
-import { useCart } from '../../composables/useCart.js'
+import { useCartStore } from '../../stores/cart.js'
 
 /**
  * JuiceCard — a product card on the category (juices) page.
@@ -15,7 +15,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['open-detail'])
 
-const cart = useCart()
+const cart = useCartStore()
 
 function addToCart() {
   cart.add(props.product)

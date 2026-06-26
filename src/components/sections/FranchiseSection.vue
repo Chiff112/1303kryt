@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 import BaseButton from '../ui/BaseButton.vue'
 
 /**
@@ -11,7 +12,7 @@ import BaseButton from '../ui/BaseButton.vue'
  * All copy and the image path come from `franchise` in content.json.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const franchise = computed(() => data.value?.franchise ?? null)
 </script>
 

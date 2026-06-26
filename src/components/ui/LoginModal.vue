@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import BaseButton from './BaseButton.vue'
-import { useAuth } from '../../composables/useAuth.js'
+import { useAuthStore } from '../../stores/auth.js'
 
 /**
  * LoginModal — "ВХОД НА САЙТ".
@@ -19,7 +19,7 @@ import { useAuth } from '../../composables/useAuth.js'
 
 const emit = defineEmits(['close', 'success'])
 
-const auth = useAuth()
+const auth = useAuthStore()
 
 const name  = ref('')
 const phone = ref('')

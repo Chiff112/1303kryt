@@ -1,5 +1,6 @@
 <script setup>
-import { useCart } from '../../composables/useCart.js'
+import { useCartStore } from '../../stores/cart.js'
+import { useRouter } from 'vue-router'
 
 /**
  * CartPopup — slide-in basket panel.
@@ -14,18 +15,18 @@ import { useCart } from '../../composables/useCart.js'
  * header/footer summaries and the product cards.
  */
 
-const cart = useCart()
-const emit = defineEmits(['checkout'])
+const cart = useCartStore()
+const router = useRouter()
 
 function goCheckout() {
   cart.close()
-  emit('checkout')
+  router.push('/cart')
 }
 </script>
 
 <template>
   <transition name="cart">
-    <div v-if="cart.isOpen.value" class="cart" @click.self="cart.close()">
+    <div v-if="cart.isOpen" class="cart" @click.self="cart.close()">
       <aside class="cart__panel" role="dialog" aria-label="Корзина">
         <!-- Header -->
         <div class="cart__head">
@@ -34,14 +35,14 @@ function goCheckout() {
         </div>
 
         <!-- Empty state -->
-        <div v-if="cart.isEmpty.value" class="cart__empty">
+        <div v-if="cart.isEmpty" class="cart__empty">
           <p>Ваша корзина пуста</p>
           <span>Добавьте напитки из каталога</span>
         </div>
 
         <!-- Items (scrollable) -->
         <div v-else class="cart__items">
-          <div v-for="item in cart.items.value" :key="item.id" class="cart-item">
+          <div v-for="item in cart.items" :key="item.id" class="cart-item">
             <img :src="item.image" :alt="item.title" class="cart-item__img" />
 
             <div class="cart-item__info">
@@ -79,11 +80,11 @@ function goCheckout() {
         </div>
 
         <!-- Total bar -->
-        <div v-if="!cart.isEmpty.value" class="cart__total">
+        <div v-if="!cart.isEmpty" class="cart__total">
           <span class="cart__total-label">Сумма заказа</span>
-          <span class="cart__total-value">{{ cart.totalPrice.value }}₽</span>
+          <span class="cart__total-value">{{ cart.totalPrice }}₽</span>
         </div>
-        <button v-if="!cart.isEmpty.value" class="cart__checkout" type="button" @click="goCheckout">
+        <button v-if="!cart.isEmpty" class="cart__checkout" type="button" @click="goCheckout">
           Оформить заказ
         </button>
       </aside>

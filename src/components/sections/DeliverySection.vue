@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import InfoTile from '../ui/InfoTile.vue'
 
@@ -19,7 +20,7 @@ import InfoTile from '../ui/InfoTile.vue'
  * Data comes from /data/content.json.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 
 const zones    = computed(() => data.value?.deliveryZones    ?? [])
 const payments = computed(() => data.value?.paymentOptions   ?? [])
@@ -194,7 +195,7 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 .delivery__bubble {
   position: absolute;
   z-index: 3;
-  top: 2%;
+  top: calc(2% + 90px);
   left: -2%;
   width: clamp(170px, 24vw, 280px);
   height: auto;

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { useCart } from '../../composables/useCart.js'
+import { useRouter } from 'vue-router'
+import { useCartStore } from '../../stores/cart.js'
 import BaseButton from '../ui/BaseButton.vue'
 
 /**
@@ -9,18 +10,18 @@ import BaseButton from '../ui/BaseButton.vue'
  *   2. ОФОРМЛЕНИЕ — delivery address form + comment → "ОПЛАТА"
  *   3. ОПЛАТА     — order summary, bonuses, delivery, phone/code → "ОПЛАТИТЬ"
  *
- * Driven by the shared cart store. Emits `home` to leave the flow.
+ * Driven by the shared cart store. Uses the router to leave the flow.
  */
 
-const cart = useCart()
-const emit = defineEmits(['home'])
+const cart = useCartStore()
+const router = useRouter()
 
 const STEPS = ['cart', 'checkout', 'payment']
 const step = ref('cart')
 
 function goStep(s) {
   // can't skip ahead past an empty cart
-  if (cart.isEmpty.value && s !== 'cart') return
+  if (cart.isEmpty && s !== 'cart') return
   step.value = s
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -82,9 +83,9 @@ function pay() {
 const bonusToUse = computed(() => {
   const n = parseInt(payment.useBonus, 10)
   if (Number.isNaN(n) || n < 0) return 0
-  return Math.min(n, cart.totalBonus.value, cart.totalPrice.value)
+  return Math.min(n, cart.totalBonus, cart.totalPrice)
 })
-const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
+const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
 </script>
 
 <template>
@@ -106,14 +107,14 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
     <div class="container cart-page__body">
       <!-- ================= STEP 1: CART ================= -->
       <template v-if="step === 'cart'">
-        <div v-if="cart.isEmpty.value" class="cart-page__empty">
+        <div v-if="cart.isEmpty" class="cart-page__empty">
           <p>Ваша корзина пуста</p>
-          <BaseButton variant="primary" size="md" @click="emit('home')">В каталог</BaseButton>
+          <BaseButton variant="primary" size="md" @click="router.push('/juices')">В каталог</BaseButton>
         </div>
 
         <template v-else>
           <!-- Items -->
-          <div class="cart-line" v-for="item in cart.items.value" :key="item.id + item.volume">
+          <div class="cart-line" v-for="item in cart.items" :key="item.id + item.volume">
             <img :src="item.image" :alt="item.title" class="cart-line__img" />
             <div class="cart-line__info">
               <div class="cart-line__head">
@@ -162,15 +163,15 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
           </div>
 
           <!-- Discount (if promo) -->
-          <div v-if="cart.discount.value" class="summary-row">
+          <div v-if="cart.discount" class="summary-row">
             <span class="summary-row__label">Скидка по промокоду</span>
-            <span class="summary-row__value">−{{ cart.discount.value }}₽</span>
+            <span class="summary-row__value">−{{ cart.discount }}₽</span>
           </div>
 
           <!-- Total -->
           <div class="summary-row summary-row--total">
             <span class="summary-row__label">Сумма заказа</span>
-            <span class="summary-row__value">{{ cart.totalPrice.value }}₽</span>
+            <span class="summary-row__value">{{ cart.totalPrice }}₽</span>
           </div>
 
           <div class="cart-page__cta">
@@ -241,24 +242,24 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
         <div v-if="paid" class="cart-page__done">
           <h2>Заказ оплачен 🎉</h2>
           <p>Спасибо! Мы уже готовим ваш заказ.</p>
-          <BaseButton variant="primary" size="md" @click="emit('home')">На главную</BaseButton>
+          <BaseButton variant="primary" size="md" @click="router.push('/')">На главную</BaseButton>
         </div>
 
         <template v-else>
           <!-- Order summary -->
           <div class="summary-row">
             <span class="summary-row__label summary-row__label--lg">Сумма заказа</span>
-            <span class="summary-row__value summary-row__value--lg">{{ cart.totalPrice.value }}₽</span>
+            <span class="summary-row__value summary-row__value--lg">{{ cart.totalPrice }}₽</span>
           </div>
           <div class="summary-row summary-row--bonus">
             <span class="summary-row__sub">Списать бонусов</span>
             <input v-model="payment.useBonus" class="bonus-input" type="number" min="0"
-              :max="cart.totalBonus.value" :placeholder="String(cart.totalBonus.value)" />
+              :max="cart.totalBonus" :placeholder="String(cart.totalBonus)" />
           </div>
 
           <div class="summary-row">
             <span class="summary-row__label summary-row__label--lg">Доставка</span>
-            <span class="summary-row__value summary-row__value--lg">{{ cart.delivery.value }}₽</span>
+            <span class="summary-row__value summary-row__value--lg">{{ cart.delivery }}₽</span>
           </div>
 
           <div class="summary-row summary-row--final">

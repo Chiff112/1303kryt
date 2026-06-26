@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
-import { useCart } from '../../composables/useCart.js'
-import { useAuth } from '../../composables/useAuth.js'
+import { storeToRefs } from 'pinia'
+import { useRouter, useRoute } from 'vue-router'
+import { useContentStore } from '../../stores/content.js'
+import { useCartStore } from '../../stores/cart.js'
+import { useAuthStore } from '../../stores/auth.js'
 import LogoMark from '../ui/LogoMark.vue'
 import LoginModal from '../ui/LoginModal.vue'
 import RegionModal from '../ui/RegionModal.vue'
@@ -21,7 +23,7 @@ import RegionModal from '../ui/RegionModal.vue'
  * All nav data comes from /data/content.json.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 
 const mainNav      = computed(() => data.value?.mainNav      ?? [])
 const secondaryNav = computed(() => data.value?.secondaryNav ?? [])
@@ -39,41 +41,44 @@ const currentRegion = computed(() => data.value?.regions?.current ?? 'Ваш р�
 const selectedRegion = ref(null)
 const regionLabel = computed(() => selectedRegion.value || 'Ваш регион')
 
-const userName = computed(() => auth.displayName.value) // null = not logged in
+const userName = computed(() => auth.displayName) // null = not logged in
 
-// Shared cart store
-const cart = useCart()
-// Shared auth store
-const auth = useAuth()
+// Shared stores
+const cart = useCartStore()
+const auth = useAuthStore()
 
-const props = defineProps({
-  activeView: { type: String, default: 'home' }
-})
-const emit = defineEmits(['navigate'])
+// Router
+const router = useRouter()
+const route = useRoute()
+
+// active-state helpers for nav highlighting
+const isAccount = computed(() => route.path === '/account')
+function isSecondaryActive(id) {
+  return id === 'franchise' && route.path === '/franchise'
+}
 
 function onRegionSelect(city) { selectedRegion.value = city }
 function openLogin()  { showLogin.value = true;  closeDrawer() }
 function openRegion() { showRegion.value = true; closeDrawer() }
-function goJuices()   { emit('navigate', 'juices'); closeDrawer() }
-function goHome()     { emit('navigate', 'home');   closeDrawer() }
-function goCart()     { emit('navigate', 'cart');   closeDrawer() }
-function goFranchise(){ emit('navigate', 'franchise'); closeDrawer() }
+function goJuices()   { router.push('/juices');    closeDrawer() }
+function goCart()     { router.push('/cart');      closeDrawer() }
+function goFranchise(){ router.push('/franchise'); closeDrawer() }
 
 // Click on the user chip: logged in → personal area, otherwise login.
 function onUserClick() {
-  if (auth.isLoggedIn.value) { emit('navigate', 'account'); closeDrawer() }
+  if (auth.isLoggedIn) { router.push('/account'); closeDrawer() }
   else openLogin()
 }
 // After a successful login, go straight to the personal area.
-function onLoginSuccess() { emit('navigate', 'account') }
+function onLoginSuccess() { router.push('/account') }
 </script>
 
 <template>
   <header class="header">
     <div class="header__inner container">
-      <!-- Logo (LogoMark renders its own link) — straddles the header
+      <!-- Logo (LogoMark is a RouterLink to "/") — straddles the header
            edge, hanging halfway over the section below. -->
-      <div class="header__logo" @click="goHome">
+      <div class="header__logo">
         <LogoMark :size="120" />
       </div>
 
@@ -94,16 +99,16 @@ function onLoginSuccess() { emit('navigate', 'account') }
 
           <div class="header__actions">
             <button class="header__chip" type="button" @click="goCart">
-              <span>Корзина ({{ cart.count.value }})</span>
+              <span>Корзина ({{ cart.count }})</span>
               <svg class="header__cart-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                 <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
                 <circle cx="18" cy="20" r="1.4" fill="currentColor"/>
               </svg>
-              <span v-if="cart.count.value" class="header__cart-sum">{{ cart.totalPrice.value }}₽</span>
+              <span v-if="cart.count" class="header__cart-sum">{{ cart.totalPrice }}₽</span>
             </button>
 
-            <button class="header__chip" :class="{ 'is-active': props.activeView === 'account' }" type="button" @click="onUserClick">
+            <button class="header__chip" :class="{ 'is-active': isAccount }" type="button" @click="onUserClick">
               <span>{{ userName || 'Войти' }}</span>
               <img src="/images/sun.png" alt="" class="header__sun-icon" />
             </button>
@@ -131,7 +136,7 @@ function onLoginSuccess() { emit('navigate', 'account') }
               <a
                 :href="item.href"
                 class="header__nav-link header__nav-link--secondary"
-                :class="{ 'is-active': props.activeView === item.id }"
+                :class="{ 'is-active': isSecondaryActive(item.id) }"
                 :style="{ '--dot': item.color }"
                 @click.prevent="item.id === 'franchise' ? goFranchise() : null"
               >
@@ -151,7 +156,7 @@ function onLoginSuccess() { emit('navigate', 'account') }
             <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
             <circle cx="18" cy="20" r="1.4" fill="currentColor"/>
           </svg>
-          <span v-if="cart.count.value" class="header__mobile-cart-badge">{{ cart.count.value }}</span>
+          <span v-if="cart.count" class="header__mobile-cart-badge">{{ cart.count }}</span>
         </button>
         <button
           class="header__burger"

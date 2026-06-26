@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 import JuiceCard from '../ui/JuiceCard.vue'
 import ProductDetailModal from '../ui/ProductDetailModal.vue'
 
@@ -14,7 +15,7 @@ import ProductDetailModal from '../ui/ProductDetailModal.vue'
  * Products come from /data/content.json (`juices`).
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const juices = computed(() => data.value?.juices ?? [])
 
 const detailProduct = ref(null)

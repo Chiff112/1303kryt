@@ -1,7 +1,7 @@
 <script setup>
 import BaseButton from './BaseButton.vue'
 import HeartButton from './HeartButton.vue'
-import { useCart } from '../../composables/useCart.js'
+import { useCartStore } from '../../stores/cart.js'
 
 /**
  * ProductCard — a single product card for the best-sellers slider
@@ -18,7 +18,7 @@ const props = defineProps({
   product: { type: Object, required: true }
 })
 
-const cart = useCart()
+const cart = useCartStore()
 
 function addToCart() {
   cart.add(props.product)

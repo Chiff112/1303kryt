@@ -1,7 +1,7 @@
 <script setup>
 /**
  * LogoMark — the Vita Juice circular logo.
- * Reusable in the header, footer, and anywhere else the brand is shown.
+ * Reusable brand mark; links to the home route ("/").
  */
 defineProps({
   size: { type: [Number, String], default: 80 }
@@ -9,9 +9,9 @@ defineProps({
 </script>
 
 <template>
-  <a href="#top" class="logo-mark" :style="{ width: size + 'px', height: size + 'px' }" aria-label="Vita Juice — на главную">
+  <RouterLink to="/" class="logo-mark" :style="{ width: size + 'px', height: size + 'px' }" aria-label="Vita Juice — на главную">
     <img src="/images/logo.png" alt="Vita Juice" class="logo-mark__img" />
-  </a>
+  </RouterLink>
 </template>
 
 <style scoped>

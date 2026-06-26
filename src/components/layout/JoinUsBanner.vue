@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 
 /**
  * JoinUsBanner — green call-to-action band at the very bottom of the
@@ -9,7 +10,7 @@ import { useContent } from '../../composables/useContent.js'
  * All copy and social links come from `joinUs` in content.json.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const joinUs = computed(() => data.value?.joinUs ?? null)
 </script>
 

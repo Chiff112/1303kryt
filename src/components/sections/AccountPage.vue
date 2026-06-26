@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { useAuth } from '../../composables/useAuth.js'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../../stores/auth.js'
 import BaseButton from '../ui/BaseButton.vue'
 
 /**
@@ -12,14 +13,14 @@ import BaseButton from '../ui/BaseButton.vue'
  *   • profile  — editable Имя / Телефон / Дата рождения / E-mail with
  *                inline validation and a birthday-gift tooltip.
  *   • history  — past orders (date · total · expandable «состав» ·
- *                «повторить»), loaded from content.json via useAuth.
+ *                «повторить»), loaded from content.json via the auth store.
  *
- * «Сохранить» saves the profile, «Выйти» logs out (emits `home`).
- * «Повторить» drops an order's items back into the cart (emits `cart`).
+ * «Сохранить» saves the profile, «Выйти» logs out (→ "/").
+ * «Повторить» drops an order's items back into the cart (→ "/cart").
  */
 
-const auth = useAuth()
-const emit = defineEmits(['home', 'cart'])
+const auth = useAuthStore()
+const router = useRouter()
 
 // make sure orders/balance are loaded (also triggered on login)
 auth.loadAccount()
@@ -58,7 +59,7 @@ function save() {
 
 function logout() {
   auth.logout()
-  emit('home')
+  router.push('/')
 }
 
 /* ---------------- Order history ---------------- */
@@ -68,7 +69,7 @@ function toggleOrder(i) {
 }
 function repeat(order) {
   auth.repeatOrder(order)
-  emit('cart')
+  router.push('/cart')
 }
 </script>
 
@@ -89,7 +90,7 @@ function repeat(order) {
           type="button"
           @click="goTab('history')"
         >История заказов</button>
-        <span class="account-band__balance">Баланс {{ auth.balance.value }}</span>
+        <span class="account-band__balance">Баланс {{ auth.balance }}</span>
       </div>
     </div>
 
@@ -116,21 +117,28 @@ function repeat(order) {
               </div>
             </div>
 
-            <!-- Дата рождения (+ info tooltip) -->
-            <div class="profile-field">
+            <!-- Дата рождения — info icon sits at the END of the line -->
+            <div class="profile-field profile-field--birthday">
               <label class="profile-field__label">Дата рождения</label>
               <div class="profile-field__control">
                 <span v-if="errors.birthday" class="profile-field__error">Пожалуйста введите дату рождения</span>
                 <input v-model="form.birthday" class="profile-field__input" :class="{ 'is-error': errors.birthday }" placeholder="дд.мм.гггг" />
               </div>
-              <button
-                class="profile-field__info"
-                type="button"
-                aria-label="О дате рождения"
-                @mouseenter="showBirthdayHint = true"
-                @mouseleave="showBirthdayHint = false"
-                @click="showBirthdayHint = !showBirthdayHint"
-              >i</button>
+              <div class="profile-field__info-wrap">
+                <button
+                  class="profile-field__info"
+                  type="button"
+                  aria-label="О дате рождения"
+                  @mouseenter="showBirthdayHint = true"
+                  @mouseleave="showBirthdayHint = false"
+                  @click="showBirthdayHint = !showBirthdayHint"
+                >i</button>
+
+                <!-- Birthday-gift speech bubble — appears up-right of the icon -->
+                <div v-if="showBirthdayHint" class="profile__bubble">
+                  <span>Дарим подарок<br />на ДР!</span>
+                </div>
+              </div>
             </div>
 
             <!-- E-mail -->
@@ -149,18 +157,13 @@ function repeat(order) {
             </div>
             <p v-if="saved" class="profile__saved">Изменения сохранены</p>
           </div>
-
-          <!-- Birthday-gift speech bubble -->
-          <div v-if="showBirthdayHint" class="profile__bubble">
-            <span>Дарим подарок<br />на ДР!</span>
-          </div>
         </div>
       </template>
 
       <!-- ================= HISTORY ================= -->
       <template v-else>
         <ul class="orders">
-          <li v-for="(order, i) in auth.orders.value" :key="order.date" class="order">
+          <li v-for="(order, i) in auth.orders" :key="order.date" class="order">
             <div class="order__row">
               <span class="order__date">{{ order.date }}</span>
               <span class="order__total">{{ order.total }}₽</span>
@@ -271,7 +274,13 @@ function repeat(order) {
 .profile-field__control {
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 320px;
+  max-width: 420px;
+}
+/* the date-of-birth line is shorter so the info icon terminates it */
+.profile-field--birthday { gap: 14px; }
+.profile-field--birthday .profile-field__control {
+  flex: 0 0 auto;
+  width: 240px;
 }
 .profile-field__error {
   display: block;
@@ -321,17 +330,24 @@ function repeat(order) {
   font-weight: 600;
 }
 
-/* Birthday-gift speech bubble */
-.profile__bubble {
+/* Birthday-gift speech bubble — anchored up-right of the info icon */
+.profile-field__info-wrap {
+  position: relative;
   flex: 0 0 auto;
-  width: 210px;
-  height: 150px;
-  margin-top: 70px;
+  align-self: center;
+}
+.profile__bubble {
+  position: absolute;
+  left: calc(100% + 4px);
+  bottom: -6px;
+  width: 200px;
+  height: 140px;
   background: url('/images/cloud-bubble.png') center/contain no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  pointer-events: none;
 }
 .profile__bubble span {
   font-weight: 800;
@@ -409,7 +425,11 @@ function repeat(order) {
 /* ---------- Responsive ---------- */
 @media (max-width: 760px) {
   .profile { flex-direction: column; }
-  .profile__bubble { margin: 8px 0 0; }
+  .profile__bubble {
+    position: static;
+    margin: 8px 0 0;
+  }
+  .profile-field--birthday .profile-field__control { width: auto; flex: 1 1 auto; }
   .profile-field { flex-wrap: wrap; gap: 8px 16px; }
   .profile-field__label { width: 130px; }
   .order__row {

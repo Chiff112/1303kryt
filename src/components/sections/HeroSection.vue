@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 
 /**
  * HeroSection
@@ -19,7 +20,7 @@ import { useContent } from '../../composables/useContent.js'
 
 const AUTOPLAY_MS = 6000
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const slides = computed(() => data.value?.heroSlides ?? [])
 
 const currentIndex = ref(0)

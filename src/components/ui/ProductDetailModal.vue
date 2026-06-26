@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import BaseButton from './BaseButton.vue'
 import HeartButton from './HeartButton.vue'
-import { useCart } from '../../composables/useCart.js'
+import { useCartStore } from '../../stores/cart.js'
 
 /**
  * ProductDetailModal — opens when a product card is clicked.
@@ -19,7 +19,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['close'])
 
-const cart = useCart()
+const cart = useCartStore()
 
 const sizes = computed(() => props.product.sizes ?? [props.product.volume])
 const activeSize = ref(props.product.volume || sizes.value[0])

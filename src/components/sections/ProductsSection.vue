@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import CategoryCircle from '../ui/CategoryCircle.vue'
 
@@ -19,7 +20,7 @@ import CategoryCircle from '../ui/CategoryCircle.vue'
  * Categories come from /data/content.json.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const categories = computed(() => data.value?.categories ?? [])
 </script>
 
@@ -128,7 +129,7 @@ const categories = computed(() => data.value?.categories ?? [])
 .products__bubble {
   position: absolute;
   z-index: 3;
-  top: 24%;
+  top: 14%;
   left: 56%;
   width: clamp(150px, 21vw, 240px);
   height: auto;

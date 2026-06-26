@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 
 /**
  * RegionModal — "ВАШ РЕГИОН".
@@ -17,7 +18,7 @@ import { useContent } from '../../composables/useContent.js'
 
 const emit = defineEmits(['close', 'select'])
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const current = computed(() => data.value?.regions?.current ?? '')
 const cities  = computed(() => data.value?.regions?.cities  ?? [])
 

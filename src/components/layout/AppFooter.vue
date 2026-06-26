@@ -1,16 +1,18 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
-import { useCart } from '../../composables/useCart.js'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import { useContentStore } from '../../stores/content.js'
+import { useCartStore } from '../../stores/cart.js'
 
 /**
  * AppFooter — legal-information footer with a small cart summary line.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const footer = computed(() => data.value?.footer ?? null)
-const cart = useCart()
-const emit = defineEmits(['navigate'])
+const cart = useCartStore()
+const router = useRouter()
 </script>
 
 <template>
@@ -18,17 +20,17 @@ const emit = defineEmits(['navigate'])
     <div class="container">
       <!-- Cart summary line -->
       <button
-        v-if="cart.count.value"
+        v-if="cart.count"
         class="app-footer__cart"
         type="button"
-        @click="emit('navigate', 'cart')"
+        @click="router.push('/cart')"
       >
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
           <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
           <circle cx="18" cy="20" r="1.4" fill="currentColor"/>
         </svg>
-        <span>В корзине {{ cart.count.value }} тов. на {{ cart.totalPrice.value }}₽</span>
+        <span>В корзине {{ cart.count }} тов. на {{ cart.totalPrice }}₽</span>
       </button>
 
       <div class="app-footer__grid">

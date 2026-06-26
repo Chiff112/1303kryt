@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { useContent } from '../../composables/useContent.js'
+import { storeToRefs } from 'pinia'
+import { useContentStore } from '../../stores/content.js'
 import SectionTitle from '../ui/SectionTitle.vue'
 import BaseButton from '../ui/BaseButton.vue'
 
@@ -15,7 +16,7 @@ import BaseButton from '../ui/BaseButton.vue'
  * relabels automatically when the JSON changes.
  */
 
-const { data } = useContent()
+const { data } = storeToRefs(useContentStore())
 const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
 </script>
 
