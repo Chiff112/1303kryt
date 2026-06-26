@@ -1,0 +1,112 @@
+{
+  "categories": [
+    { "id": "juice",    "title": "Соки",         "image": "/images/cat-juice.png" },
+    { "id": "mix",      "title": "Миксы",        "image": "/images/cat-smoothie.png" },
+    { "id": "smoothie", "title": "Смузи",        "image": "/images/cat-lassi.png" },
+    { "id": "detox",    "title": "Детоксы",      "image": "/images/cat-detox.png" },
+    { "id": "lassi",    "title": "Ласси",        "image": "/images/cat-juice.png" },
+    { "id": "bowl",     "title": "Боулы",        "image": "/images/cat-bowl.png" },
+    { "id": "salad",    "title": "Салаты",       "image": "/images/cat-salad.png" },
+    { "id": "healthy",  "title": "Здоровая еда", "image": "/images/cat-healthy.png" }
+  ],
+  "heroSlides": [
+    {
+      "id": 1,
+      "title": "Арбузные\nдольки",
+      "weight": "200 гр.",
+      "price": "99р.",
+      "background": "#E83A2E"
+    },
+    {
+      "id": 2,
+      "title": "Цитрусовый\nмикс",
+      "weight": "300 гр.",
+      "price": "199р.",
+      "background": "#FBBA1D"
+    },
+    {
+      "id": 3,
+      "title": "Зелёный\nдетокс",
+      "weight": "250 гр.",
+      "price": "249р.",
+      "background": "#6EA84F"
+    }
+  ],
+  "bestSellers": [
+    {
+      "id": "p1",
+      "title": "Ласси",
+      "volume": "500 мл",
+      "price": 375,
+      "image": "/images/prod-lassi.png",
+      "bonus": null
+    },
+    {
+      "id": "p2",
+      "title": "Микс",
+      "volume": "500 мл",
+      "price": 400,
+      "image": "/images/prod-mix.png",
+      "bonus": "+20 б"
+    },
+    {
+      "id": "p3",
+      "title": "Боул",
+      "volume": "500 мл",
+      "price": 450,
+      "image": "/images/prod-bowl.png",
+      "bonus": null
+    },
+    {
+      "id": "p4",
+      "title": "Смузи",
+      "volume": "500 мл",
+      "price": 350,
+      "image": "/images/cat-smoothie.png",
+      "bonus": null
+    },
+    {
+      "id": "p5",
+      "title": "Детокс",
+      "volume": "500 мл",
+      "price": 420,
+      "image": "/images/cat-detox.png",
+      "bonus": "+15 б"
+    }
+  ],
+  "paymentOptions": [
+    { "id": "cash",   "title": "Наличными", "description": "Оплата наличными курьеру или при получении заказа", "icon": "/images/pay-cash.png" },
+    { "id": "card",   "title": "Картой",    "description": "Оплата банковской картой курьеру или при получении заказа", "icon": "/images/pay-card.png" },
+    { "id": "online", "title": "Онлайн-оплата", "description": "Безопасный и удобный способ оплаты заказа на сайте", "icon": "/images/pay-online.png" }
+  ],
+  "deliveryOptions": [
+    { "id": "courier", "title": "Курьером",   "description": "Вы оплачиваете только заказ, доставка — бесплатно", "icon": "/images/del-courier.png" },
+    { "id": "pickup",  "title": "Самовывоз", "description": "Можете сами забрать заказ, указав адрес при оформлении заказа", "icon": "/images/del-pickup.png" }
+  ],
+  "deliveryZones": [
+    { "id": "z1", "title": "Минимальная сумма заказа 500 руб.",  "color": "#FBBA1D" },
+    { "id": "z2", "title": "Минимальная сумма заказа 750 руб.",  "color": "#F08C2E" },
+    { "id": "z3", "title": "Минимальная сумма заказа 1000 руб.", "color": "#E8628E" }
+  ],
+  "loyaltyBenefits": [
+    { "id": "b1", "title": "Всегда рядом в вашем телефоне",        "icon": "/images/loy-phone.png" },
+    { "id": "b2", "title": "Участвуй в акциях и получай подарки",  "icon": "/images/loy-gift.png" },
+    { "id": "b3", "title": "Каждый 5-й напиток бесплатно",         "icon": "/images/loy-cup.png" }
+  ],
+  "mainNav": [
+    { "id": "juice",    "title": "Соки",         "href": "#juice" },
+    { "id": "mix",      "title": "Миксы",        "href": "#mix" },
+    { "id": "smoothie", "title": "Смузи",        "href": "#smoothie" },
+    { "id": "lassi",    "title": "Ласси",        "href": "#lassi" },
+    { "id": "detox",    "title": "Детокс",       "href": "#detox" },
+    { "id": "bowl",     "title": "Боулы",        "href": "#bowl" },
+    { "id": "salad",    "title": "Салаты",       "href": "#salad" },
+    { "id": "healthy",  "title": "Здоровая еда", "href": "#healthy" }
+  ],
+  "secondaryNav": [
+    { "id": "about",     "title": "О нас",     "href": "#about" },
+    { "id": "franchise", "title": "Франшиза",  "href": "#franchise" },
+    { "id": "contacts",  "title": "Контакты",  "href": "#contacts" },
+    { "id": "work",      "title": "Работа",    "href": "#work" }
+  ]
+}
