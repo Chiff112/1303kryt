@@ -17,7 +17,7 @@ defineProps({
   image:  { type: String, required: true },
   volume: { type: String, default: '' },
   price:  { type: [Number, String], required: true },
-  bonus:  { type: String, default: null }
+  bonus:  { type: Boolean, default: false }
 })
 </script>
 
@@ -25,10 +25,12 @@ defineProps({
   <article class="product-card">
     <div class="product-card__media">
       <img :src="image" :alt="title" class="product-card__img" />
-      <span v-if="bonus" class="product-card__bonus">
-        <img src="/images/bonuses.png" alt="" />
-        <span>{{ bonus }}</span>
-      </span>
+      <img
+        v-if="bonus"
+        src="/images/bonuses.png"
+        alt="Бонусные баллы"
+        class="product-card__bonus"
+      />
     </div>
 
     <h3 class="product-card__title">{{ title }}</h3>
@@ -71,31 +73,14 @@ defineProps({
   object-fit: contain;
 }
 
-/* "+20 б" bonus badge */
+/* "+20 б" bonus badge (image already contains the text) */
 .product-card__bonus {
   position: absolute;
   top: 4px;
   right: 4px;
   width: 56px;
   height: 56px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.product-card__bonus img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   object-fit: contain;
-}
-.product-card__bonus span {
-  position: relative;
-  z-index: 1;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--color-text);
-  padding-bottom: 6px;
 }
 
 /* ----- Text ----- */
