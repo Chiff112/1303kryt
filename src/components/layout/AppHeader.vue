@@ -1,23 +1,23 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useContent } from '../../composables/useContent.js'
+import { useCart } from '../../composables/useCart.js'
 import LogoMark from '../ui/LogoMark.vue'
-import IconButton from '../ui/IconButton.vue'
+import LoginModal from '../ui/LoginModal.vue'
+import RegionModal from '../ui/RegionModal.vue'
 
 /**
  * AppHeader — site header.
  *
- * Desktop (>=1024px):
- *   - Logo on the left
- *   - Top row:    [Region] [Main categories]                  [Cart] [Login]
- *   - Bottom row: [Secondary nav: О нас, Франшиза, Контакты]  [Работа]
+ * Desktop (>=1024px): a single horizontal row sitting on a dashed line.
+ *   Logo | Region + main category links (each with a color dot that
+ *   fills on hover) | secondary links (dark dots) | Корзина | Никита/Войти
+ *   Region / Корзина / login text turn yellow on hover or when active.
  *
- * Tablet / mobile:
- *   - Logo on the left, cart + burger on the right
- *   - Burger toggles a slide-in drawer containing every link
+ * Mobile/tablet: logo + cart + burger that opens a slide-in drawer.
  *
- * All nav items are loaded from /data/content.json so they stay in
- * one place and can be reused by the footer or category pages later.
+ * Region picker and login open real modal components.
+ * All nav data comes from /data/content.json.
  */
 
 const { data } = useContent()
@@ -29,71 +29,110 @@ const drawerOpen = ref(false)
 function toggleDrawer() { drawerOpen.value = !drawerOpen.value }
 function closeDrawer()  { drawerOpen.value = false }
 
-// Cart count is mocked for now — will come from a cart store later.
-const cartCount = ref(0)
+// Modals
+const showLogin  = ref(false)
+const showRegion = ref(false)
+
+// Region + auth state
+const currentRegion = computed(() => data.value?.regions?.current ?? 'Ваш регион')
+const selectedRegion = ref(null)
+const regionLabel = computed(() => selectedRegion.value || 'Ваш регион')
+
+const userName = ref(null) // null = not logged in
+
+// Shared cart store
+const cart = useCart()
+
+const emit = defineEmits(['navigate'])
+
+function onRegionSelect(city) { selectedRegion.value = city }
+function openLogin()  { showLogin.value = true;  closeDrawer() }
+function openRegion() { showRegion.value = true; closeDrawer() }
+function goJuices()   { emit('navigate', 'juices'); closeDrawer() }
+function goHome()     { emit('navigate', 'home');   closeDrawer() }
 </script>
 
 <template>
   <header class="header">
     <div class="header__inner container">
-      <!-- Logo -->
-      <div class="header__logo">
-        <LogoMark :size="72" />
+      <!-- Logo (LogoMark renders its own link) -->
+      <div class="header__logo" @click="goHome">
+        <LogoMark :size="84" />
       </div>
 
-      <!-- ============= DESKTOP / TABLET LAYOUT ============= -->
+      <!-- ============= DESKTOP LAYOUT ============= -->
       <div class="header__content">
-        <!-- Top row -->
-        <div class="header__row header__row--top">
-          <button class="header__region" type="button">
-            <img src="/images/pin.png" alt="" class="header__region-icon" />
-            <span>Ваш регион</span>
+        <!-- Top row: region + actions -->
+        <div class="header__top">
+          <button
+            class="header__chip header__chip--region"
+            :class="{ 'is-active': selectedRegion }"
+            type="button"
+            @click="openRegion"
+          >
+            <img src="/images/pin.png" alt="" class="header__chip-pin" />
+            <span>{{ regionLabel }}</span>
+            <img src="/images/chevron.png" alt="" class="header__chip-chevron" />
           </button>
 
-          <nav class="header__nav header__nav--main" aria-label="Категории">
-            <ul>
-              <li v-for="item in mainNav" :key="item.id">
-                <a :href="item.href">{{ item.title }}</a>
-              </li>
-            </ul>
-          </nav>
-
           <div class="header__actions">
-            <IconButton
-              icon="/images/cart.png"
-              label="Корзина"
-              :badge="cartCount"
-              icon-alt="Корзина"
-            />
-            <IconButton
-              icon="/images/login.png"
-              label="Войти"
-              icon-alt="Войти"
-            />
+            <button class="header__chip" type="button" @click="cart.open()">
+              <span>Корзина ({{ cart.count.value }})</span>
+              <svg class="header__cart-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
+                <circle cx="18" cy="20" r="1.4" fill="currentColor"/>
+              </svg>
+              <span v-if="cart.count.value" class="header__cart-sum">{{ cart.totalPrice.value }}₽</span>
+            </button>
+
+            <button class="header__chip" type="button" @click="openLogin">
+              <span>{{ userName || 'Войти' }}</span>
+              <svg class="header__login-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </button>
           </div>
         </div>
 
-        <!-- Bottom row -->
-        <div class="header__row header__row--bottom">
-          <nav class="header__nav header__nav--secondary" aria-label="Разделы сайта">
-            <ul>
-              <li v-for="item in secondaryNav.filter(i => i.id !== 'work')" :key="item.id">
-                <a :href="item.href">{{ item.title }}</a>
-              </li>
-            </ul>
-          </nav>
-          <a class="header__work" href="#work">Работа</a>
-        </div>
+        <!-- Bottom row: nav on the dashed line -->
+        <nav class="header__nav" aria-label="Навигация">
+          <ul class="header__nav-list">
+            <li v-for="item in mainNav" :key="item.id" class="header__nav-item">
+              <a
+                :href="item.href"
+                class="header__nav-link"
+                :style="{ '--dot': item.color }"
+                @click.prevent="item.id === 'juice' ? goJuices() : null"
+              >
+                <span class="header__nav-text">{{ item.title }}</span>
+                <span class="header__dot"></span>
+              </a>
+            </li>
+
+            <li class="header__nav-spacer" aria-hidden="true"></li>
+
+            <li v-for="item in secondaryNav" :key="item.id" class="header__nav-item">
+              <a :href="item.href" class="header__nav-link header__nav-link--secondary" :style="{ '--dot': item.color }">
+                <span class="header__nav-text">{{ item.title }}</span>
+                <span class="header__dot"></span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <!-- ============= MOBILE: cart + burger ============= -->
       <div class="header__mobile-actions">
-        <IconButton
-          icon="/images/cart.png"
-          :badge="cartCount"
-          icon-alt="Корзина"
-          label=""
-        />
+        <button class="header__mobile-cart" type="button" aria-label="Корзина" @click="cart.open()">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
+            <circle cx="18" cy="20" r="1.4" fill="currentColor"/>
+          </svg>
+          <span v-if="cart.count.value" class="header__mobile-cart-badge">{{ cart.count.value }}</span>
+        </button>
         <button
           class="header__burger"
           type="button"
@@ -114,16 +153,23 @@ const cartCount = ref(0)
         <div class="drawer__panel">
           <button class="drawer__close" type="button" aria-label="Закрыть меню" @click="closeDrawer">×</button>
 
-          <button class="drawer__region" type="button">
+          <button class="drawer__region" type="button" @click="openRegion">
             <img src="/images/pin.png" alt="" />
-            <span>Ваш регион</span>
+            <span>{{ regionLabel }}</span>
           </button>
 
           <nav class="drawer__nav" aria-label="Категории">
             <p class="drawer__group-title">Категории</p>
             <ul>
               <li v-for="item in mainNav" :key="item.id">
-                <a :href="item.href" @click="closeDrawer">{{ item.title }}</a>
+                <a
+                  :href="item.href"
+                  class="drawer__link"
+                  @click="item.id === 'juice' ? goJuices() : closeDrawer()"
+                >
+                  <span class="drawer__dot" :style="{ background: item.color }"></span>
+                  {{ item.title }}
+                </a>
               </li>
             </ul>
           </nav>
@@ -132,144 +178,161 @@ const cartCount = ref(0)
             <p class="drawer__group-title">О компании</p>
             <ul>
               <li v-for="item in secondaryNav" :key="item.id">
-                <a :href="item.href" @click="closeDrawer">{{ item.title }}</a>
+                <a :href="item.href" class="drawer__link" @click="closeDrawer">{{ item.title }}</a>
               </li>
             </ul>
           </nav>
 
-          <a href="#login" class="drawer__login" @click="closeDrawer">
-            <img src="/images/login.png" alt="" />
-            <span>Войти</span>
-          </a>
+          <button class="drawer__login" @click="openLogin">
+            <span>{{ userName || 'Войти' }}</span>
+          </button>
         </div>
       </div>
     </transition>
+
+    <!-- ============= MODALS ============= -->
+    <LoginModal v-if="showLogin" @close="showLogin = false" />
+    <RegionModal v-if="showRegion" @close="showRegion = false" @select="onRegionSelect" />
   </header>
 </template>
 
 <style scoped>
-/* ========================================================
-   Base header layout — desktop / tablet first
-   ======================================================== */
 .header {
   position: sticky;
   top: 0;
   z-index: 50;
   background: #fff;
-  border-bottom: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
 }
 .header__inner {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  align-items: stretch;
+  gap: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
-.header__logo { flex: 0 0 auto; }
+.header__logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 
 .header__content {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 8px;
   min-width: 0;
 }
-.header__row {
+
+/* ---------- Top row ---------- */
+.header__top {
   display: flex;
   align-items: center;
-  gap: 24px;
-  flex-wrap: nowrap;
-}
-.header__row--top    { justify-content: space-between; }
-.header__row--bottom {
   justify-content: space-between;
-  padding-top: 6px;
-  border-top: 1px dashed var(--color-border);
+  gap: 16px;
+}
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
-/* Region button */
-.header__region {
+/* Chip = region / cart / login text+icon button */
+.header__chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  letter-spacing: 0.4px;
+  color: var(--color-text);
   transition: color var(--t-fast);
   white-space: nowrap;
 }
-.header__region:hover { color: var(--color-green); }
-.header__region-icon { width: 14px; height: 14px; }
-
-/* Main category nav */
-.header__nav ul {
-  display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
+.header__chip:hover,
+.header__chip.is-active { color: var(--color-yellow-dark); }
+.header__chip--region { color: var(--color-text-muted); }
+.header__chip-pin     { width: 14px; height: 18px; object-fit: contain; }
+.header__chip-chevron { width: 11px; height: 10px; object-fit: contain; opacity: 0.6; }
+.header__cart-icon,
+.header__login-icon   { color: currentColor; }
+.header__cart-sum {
+  font-weight: 800;
+  color: var(--color-yellow-dark);
 }
-.header__nav a {
+
+/* ---------- Bottom nav ---------- */
+.header__nav {
+  position: relative;
+  padding: 14px 0 4px;
+}
+.header__nav-list {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+.header__nav-spacer { flex: 1 1 auto; }
+
+.header__nav-item { flex: 0 0 auto; }
+.header__nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.header__nav-text {
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  position: relative;
+  color: var(--color-text);
   transition: color var(--t-fast);
   white-space: nowrap;
 }
-.header__nav a:hover { color: var(--color-green); }
-.header__nav a::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: -4px;
-  height: 2px;
-  background: var(--color-green);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--t-base);
+/* The dot under each item: gray by default, fills with --dot on hover */
+.header__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #D8D9D9;
+  transition: background var(--t-fast), transform var(--t-fast);
 }
-.header__nav a:hover::after { transform: scaleX(1); }
+.header__nav-link:hover .header__nav-text { color: var(--dot); }
+.header__nav-link:hover .header__dot {
+  background: var(--dot);
+  transform: scale(1.1);
+}
+/* secondary links: text turns to its (dark) dot color, dot fills dark */
+.header__nav-link--secondary:hover .header__nav-text { color: var(--dot); }
 
-.header__nav--secondary ul { gap: 28px; }
-.header__nav--secondary a {
-  color: var(--color-text-muted);
-  font-weight: 600;
-}
-
-/* Actions (cart, login) */
-.header__actions {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.header__work {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  transition: color var(--t-fast);
-}
-.header__work:hover { color: var(--color-green); }
-
-/* Mobile actions hidden on desktop */
+/* ---------- Mobile actions ---------- */
 .header__mobile-actions { display: none; }
-
-/* ========================================================
-   Tablet / mobile  (< 1024px)
-   ======================================================== */
-@media (max-width: 1023px) {
-  .header__content        { display: none; }
-  .header__mobile-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-left: auto;
-  }
-  .header__inner { gap: 12px; padding-top: 8px; padding-bottom: 8px; }
+.header__mobile-cart {
+  position: relative;
+  color: var(--color-text);
+}
+.header__mobile-cart-badge {
+  position: absolute;
+  top: -6px; right: -8px;
+  min-width: 16px; height: 16px;
+  padding: 0 4px;
+  background: var(--color-yellow);
+  color: var(--color-text);
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Burger button */
+/* Burger */
 .header__burger {
   width: 40px; height: 40px;
   display: inline-flex;
@@ -296,9 +359,24 @@ const cartCount = ref(0)
 .header__burger-bars.is-open span:nth-child(2) { opacity: 0; }
 .header__burger-bars.is-open span:nth-child(3) { top: 8px; transform: rotate(-45deg); }
 
-/* ========================================================
-   Mobile drawer
-   ======================================================== */
+/* ---------- Responsive ---------- */
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .header__nav-list { gap: 14px; }
+  .header__nav-text { font-size: 12px; }
+  .header__actions  { gap: 18px; }
+}
+@media (max-width: 1023px) {
+  .header__content        { display: none; }
+  .header__mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-left: auto;
+  }
+  .header__inner { gap: 12px; align-items: center; }
+}
+
+/* ---------- Drawer ---------- */
 .drawer {
   position: fixed;
   inset: 0;
@@ -333,7 +411,7 @@ const cartCount = ref(0)
   color: var(--color-text-muted);
   text-transform: uppercase;
 }
-.drawer__region img { width: 16px; height: 16px; }
+.drawer__region img { width: 16px; height: 20px; }
 .drawer__group-title {
   font-size: 11px;
   text-transform: uppercase;
@@ -343,31 +421,38 @@ const cartCount = ref(0)
 }
 .drawer__nav { margin-bottom: 24px; }
 .drawer__nav ul { display: flex; flex-direction: column; gap: 12px; }
-.drawer__nav a {
+.drawer__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3px;
   padding: 6px 0;
-  display: block;
   transition: color var(--t-fast);
 }
-.drawer__nav a:hover { color: var(--color-green); }
+.drawer__link:hover { color: var(--color-green); }
+.drawer__dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
 .drawer__login {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
-  background: var(--color-green);
-  color: #fff;
+  padding: 10px 22px;
+  background: var(--color-yellow);
+  color: var(--color-text);
   border-radius: var(--radius-pill);
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
+  box-shadow: 0 3px 0 var(--color-yellow-dark);
   transition: background var(--t-fast);
 }
-.drawer__login:hover { background: var(--color-green-dark); }
-.drawer__login img { width: 18px; height: 18px; filter: brightness(0) invert(1); }
+.drawer__login:hover { background: #FFC638; }
 
 /* Drawer transition */
 .drawer-enter-active, .drawer-leave-active { transition: opacity var(--t-base); }
@@ -376,13 +461,4 @@ const cartCount = ref(0)
 .drawer-leave-active .drawer__panel        { transition: transform var(--t-base); }
 .drawer-enter-from   .drawer__panel        { transform: translateX(100%); }
 .drawer-leave-to     .drawer__panel        { transform: translateX(100%); }
-
-/* ========================================================
-   Small / mid tablet adjustments
-   ======================================================== */
-@media (max-width: 1199px) and (min-width: 1024px) {
-  .header__nav ul { gap: 14px; }
-  .header__nav a  { font-size: 12px; }
-  .header__actions { gap: 14px; }
-}
 </style>

@@ -125,9 +125,6 @@ onBeforeUnmount(() => {
 .best-sellers {
   background: #fff;
   padding: 56px 0;
-  border-top:    1px dashed var(--color-dashed);
-  border-bottom: 1px dashed var(--color-dashed);
-  margin: 8px 0;
 }
 
 .best-sellers__shell {

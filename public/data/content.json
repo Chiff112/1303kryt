@@ -77,6 +77,20 @@
       "bonus": true
     }
   ],
+  "juices": [
+    { "id": "j1",  "title": "Ласси",            "volume": "500 мл", "price": 375, "image": "/images/prod-lassi.png",   "ingredients": "манго, йогурт, апельсин", "bonus": 0 },
+    { "id": "j2",  "title": "Микс",             "volume": "500 мл", "price": 400, "image": "/images/prod-mix.png",     "ingredients": "морковь, апельсин, банан", "bonus": 20 },
+    { "id": "j3",  "title": "Боул",             "volume": "500 мл", "price": 450, "image": "/images/prod-bowl.png",    "ingredients": "ягоды, кокос, гранола", "bonus": 0 },
+    { "id": "j4",  "title": "Апельсиновый сок", "volume": "500 мл", "price": 400, "image": "/images/cat-juice.png",    "ingredients": "апельсин, лёд", "bonus": 0 },
+    { "id": "j5",  "title": "Смузи",            "volume": "500 мл", "price": 385, "image": "/images/cat-lassi.png",    "ingredients": "клубника, банан, апельсин", "bonus": 0 },
+    { "id": "j6",  "title": "Детокс",           "volume": "500 мл", "price": 500, "image": "/images/cat-detox.png",    "ingredients": "груша, лайм, лимон", "bonus": 50 },
+    { "id": "j7",  "title": "Доктор",           "volume": "500 мл", "price": 375, "image": "/images/cat-juice.png",    "ingredients": "апельсин, имбирь, лимон", "bonus": 0 },
+    { "id": "j8",  "title": "Гранатовый сок",   "volume": "500 мл", "price": 500, "image": "/images/cat-lassi.png",    "ingredients": "гранат, лёд", "bonus": 20 },
+    { "id": "j9",  "title": "Грин",             "volume": "500 мл", "price": 450, "image": "/images/cat-salad.png",    "ingredients": "сельдерей, яблоко, шпинат, спирулина, лёд", "bonus": 0 },
+    { "id": "j10", "title": "Ласси",            "volume": "500 мл", "price": 375, "image": "/images/prod-lassi.png",   "ingredients": "манго, йогурт, апельсин", "bonus": 0 },
+    { "id": "j11", "title": "Микс",             "volume": "500 мл", "price": 400, "image": "/images/prod-mix.png",     "ingredients": "морковь, апельсин, банан", "bonus": 20 },
+    { "id": "j12", "title": "Боул",             "volume": "500 мл", "price": 450, "image": "/images/prod-bowl.png",    "ingredients": "ягоды, кокос, гранола", "bonus": 0 }
+  ],
   "paymentOptions": [
     { "id": "cash",   "title": "Наличными", "description": "Оплата наличными курьеру или при получении заказа", "icon": "/images/pay-cash.png" },
     { "id": "card",   "title": "Картой",    "description": "Оплата банковской картой курьеру или при получении заказа", "icon": "/images/pay-card.png" },
@@ -97,21 +111,30 @@
     { "id": "b3", "title": "Каждый 5-й напиток бесплатно",         "icon": "/images/loy-cup.png" }
   ],
   "mainNav": [
-    { "id": "juice",    "title": "Соки",         "href": "#juice" },
-    { "id": "mix",      "title": "Миксы",        "href": "#mix" },
-    { "id": "smoothie", "title": "Смузи",        "href": "#smoothie" },
-    { "id": "lassi",    "title": "Ласси",        "href": "#lassi" },
-    { "id": "detox",    "title": "Детокс",       "href": "#detox" },
-    { "id": "bowl",     "title": "Боулы",        "href": "#bowl" },
-    { "id": "salad",    "title": "Салаты",       "href": "#salad" },
-    { "id": "healthy",  "title": "Здоровая еда", "href": "#healthy" }
+    { "id": "juice",    "title": "Соки",         "href": "#juice",    "color": "#F19013" },
+    { "id": "mix",      "title": "Миксы",        "href": "#mix",      "color": "#FECE3C" },
+    { "id": "smoothie", "title": "Смузи",        "href": "#smoothie", "color": "#EF89A7" },
+    { "id": "lassi",    "title": "Ласси",        "href": "#lassi",    "color": "#E4087E" },
+    { "id": "detox",    "title": "Детокс",       "href": "#detox",    "color": "#EE7E19" },
+    { "id": "bowl",     "title": "Боулы",        "href": "#bowl",     "color": "#AD4984" },
+    { "id": "salad",    "title": "Салаты",       "href": "#salad",    "color": "#009745" },
+    { "id": "healthy",  "title": "Здоровая еда", "href": "#healthy",  "color": "#7AB832" }
   ],
   "secondaryNav": [
-    { "id": "about",     "title": "О нас",     "href": "#about" },
-    { "id": "franchise", "title": "Франшиза",  "href": "#franchise" },
-    { "id": "contacts",  "title": "Контакты",  "href": "#contacts" },
-    { "id": "work",      "title": "Работа",    "href": "#work" }
+    { "id": "about",     "title": "О нас",     "href": "#about",     "color": "#2A2A2A" },
+    { "id": "franchise", "title": "Франшиза",  "href": "#franchise", "color": "#2A2A2A" },
+    { "id": "contacts",  "title": "Контакты",  "href": "#contacts",  "color": "#2A2A2A" },
+    { "id": "work",      "title": "Работа",    "href": "#work",      "color": "#2A2A2A" }
   ],
+  "regions": {
+    "current": "Красноярск",
+    "cities": [
+      "Волгоград", "Красноярск", "Пенза",
+      "Воронеж", "Москва", "Самара",
+      "Екатеринбург", "Нижний Новгород", "Санкт-Петербург",
+      "Казань", "Новосибирск", "Уфа"
+    ]
+  },
   "footer": {
     "title": "Правовая информация",
     "companyInfo": [
