@@ -1,33 +1,23 @@
 <script setup>
 import AppHeader from '../components/layout/AppHeader.vue'
-// Section components will be added one by one (hero, categories, etc.)
+import HeroSection from '../components/sections/HeroSection.vue'
+// Following sections will be added one by one
 </script>
 
 <template>
   <div id="top" class="home">
     <AppHeader />
 
-    <!-- Step 1: header is done.
-         Following steps will add:
-           - HeroSection (Step 2)
-           - CategoriesSection (Step 3)
-           - BestSellersSection (Step 4)
-           - DeliverySection (Step 5)
-           - LoyaltySection (Step 6)
-           - AppFooter + JoinUsBanner (Step 7)
-    -->
-    <main class="home__placeholder">
-      <div class="container">
-        <p>Шаг 1 готов — шапка сайта. Следующие секции будут добавлены далее.</p>
-      </div>
+    <main>
+      <HeroSection />
+
+      <!-- Step 2 done. Following steps will add:
+             - CategoriesSection (Step 3 — "Наша продукция")
+             - BestSellersSection (Step 4 — "Хиты продаж")
+             - DeliverySection (Step 5 — "Доставка и оплата")
+             - LoyaltySection (Step 6 — "Наша система лояльности")
+             - AppFooter + JoinUsBanner (Step 7)
+      -->
     </main>
   </div>
 </template>
-
-<style scoped>
-.home__placeholder {
-  padding: 80px 0;
-  text-align: center;
-  color: var(--color-text-muted);
-}
-</style>

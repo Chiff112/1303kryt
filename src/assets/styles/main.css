@@ -1,4 +1,15 @@
 /* ================================
+   Fonts (bundled locally via @fontsource — no external CDN)
+   ================================ */
+@import '@fontsource/montserrat/cyrillic-400.css';
+@import '@fontsource/montserrat/cyrillic-500.css';
+@import '@fontsource/montserrat/cyrillic-600.css';
+@import '@fontsource/montserrat/cyrillic-700.css';
+@import '@fontsource/montserrat/cyrillic-900.css';
+@import '@fontsource/caveat/cyrillic-400.css';
+@import '@fontsource/caveat/cyrillic-700.css';
+
+/* ================================
    CSS variables — design tokens
    ================================ */
 :root {
@@ -16,7 +27,8 @@
   --color-dashed:      #BDBDBD;
 
   /* Typography */
-  --font-base: 'Montserrat', 'Segoe UI', Tahoma, sans-serif;
+  --font-base:   'Montserrat', 'Segoe UI', Tahoma, sans-serif;
+  --font-script: 'Caveat', 'Segoe Script', cursive;
 
   /* Layout */
   --container-max: 1280px;

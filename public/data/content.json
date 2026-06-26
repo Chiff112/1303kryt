@@ -15,21 +15,24 @@
       "title": "Арбузные\nдольки",
       "weight": "200 гр.",
       "price": "99р.",
-      "background": "#E83A2E"
+      "background": "/images/bg-hero.png",
+      "theme": "red"
     },
     {
       "id": 2,
       "title": "Цитрусовый\nмикс",
       "weight": "300 гр.",
       "price": "199р.",
-      "background": "#FBBA1D"
+      "background": "/images/bg-hero.png",
+      "theme": "red"
     },
     {
       "id": 3,
       "title": "Зелёный\nдетокс",
       "weight": "250 гр.",
       "price": "249р.",
-      "background": "#6EA84F"
+      "background": "/images/bg-hero.png",
+      "theme": "red"
     }
   ],
   "bestSellers": [
