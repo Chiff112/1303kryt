@@ -27,8 +27,10 @@ const categories = computed(() => data.value?.categories ?? [])
   <section class="products" id="products">
     <div class="container">
       <SectionTitle>Наша продукция</SectionTitle>
+    </div>
 
-      <div class="products__panel">
+    <div class="products__panel">
+      <div class="products__panel-inner container">
         <!-- Left: girl with smoothie + semicircle backdrop + speech bubble -->
         <div class="products__girl">
           <img
@@ -78,13 +80,14 @@ const categories = computed(() => data.value?.categories ?? [])
   background-size: cover;
   background-position: center;
   background-color: var(--color-green); /* fallback */
-  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.products__panel-inner {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
   align-items: center;
   gap: 24px;
   min-height: 360px;
-  overflow: hidden;
 }
 
 /* ----- Girl column ----- */
@@ -148,7 +151,7 @@ const categories = computed(() => data.value?.categories ?? [])
    Responsive
    ======================================================== */
 @media (max-width: 1023px) {
-  .products__panel {
+  .products__panel-inner {
     grid-template-columns: 1fr;
     gap: 16px;
   }

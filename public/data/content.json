@@ -1,13 +1,45 @@
 {
   "categories": [
-    { "id": "juice",    "title": "Соки",         "image": "/images/cat-juice.png" },
-    { "id": "mix",      "title": "Миксы",        "image": "/images/cat-smoothie.png" },
-    { "id": "smoothie", "title": "Смузи",        "image": "/images/cat-lassi.png" },
-    { "id": "detox",    "title": "Детоксы",      "image": "/images/cat-detox.png" },
-    { "id": "lassi",    "title": "Ласси",        "image": "/images/cat-smoothie.png" },
-    { "id": "bowl",     "title": "Боулы",        "image": "/images/cat-bowl.png" },
-    { "id": "salad",    "title": "Салаты",       "image": "/images/cat-salad.png" },
-    { "id": "healthy",  "title": "Здоровая еда", "image": "/images/cat-healthy.png" }
+    {
+      "id": "juice",
+      "title": "Соки",
+      "image": "/images/cat-juice.png"
+    },
+    {
+      "id": "mix",
+      "title": "Миксы",
+      "image": "/images/cat-smoothie.png"
+    },
+    {
+      "id": "smoothie",
+      "title": "Смузи",
+      "image": "/images/cat-lassi.png"
+    },
+    {
+      "id": "detox",
+      "title": "Детоксы",
+      "image": "/images/cat-detox.png"
+    },
+    {
+      "id": "lassi",
+      "title": "Ласси",
+      "image": "/images/cat-smoothie.png"
+    },
+    {
+      "id": "bowl",
+      "title": "Боулы",
+      "image": "/images/cat-bowl.png"
+    },
+    {
+      "id": "salad",
+      "title": "Салаты",
+      "image": "/images/cat-salad.png"
+    },
+    {
+      "id": "healthy",
+      "title": "Здоровая еда",
+      "image": "/images/cat-healthy.png"
+    }
   ],
   "heroSlides": [
     {
@@ -42,7 +74,8 @@
       "volume": "500 мл",
       "price": 375,
       "image": "/images/prod-lassi.png",
-      "bonus": false
+      "bonus": 20,
+      "ingredients": "манго, йогурт, апельсин"
     },
     {
       "id": "p2",
@@ -50,7 +83,8 @@
       "volume": "500 мл",
       "price": 400,
       "image": "/images/prod-mix.png",
-      "bonus": true
+      "bonus": 25,
+      "ingredients": "апельсин, морковь, имбирь"
     },
     {
       "id": "p3",
@@ -58,7 +92,8 @@
       "volume": "500 мл",
       "price": 450,
       "image": "/images/prod-bowl.png",
-      "bonus": false
+      "bonus": 30,
+      "ingredients": "гранола, банан, ягоды"
     },
     {
       "id": "p4",
@@ -66,7 +101,8 @@
       "volume": "500 мл",
       "price": 350,
       "image": "/images/cat-smoothie.png",
-      "bonus": false
+      "bonus": 20,
+      "ingredients": "свежие фрукты, лёд"
     },
     {
       "id": "p5",
@@ -74,77 +110,423 @@
       "volume": "500 мл",
       "price": 420,
       "image": "/images/cat-detox.png",
-      "bonus": true
+      "bonus": 25,
+      "ingredients": "свежие фрукты, лёд"
     }
   ],
   "juices": [
-    { "id": "j1",  "title": "Ласси",            "volume": "500 мл", "price": 375, "image": "/images/prod-lassi.png",   "ingredients": "манго, йогурт, апельсин", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "1.2 г", "fat": "2.0 г", "carbs": "14 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j2",  "title": "Микс",             "volume": "500 мл", "price": 400, "image": "/images/prod-mix.png",     "ingredients": "морковь, апельсин, банан", "bonus": 20,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.9 г", "fat": "0.3 г", "carbs": "16 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j3",  "title": "Боул",             "volume": "500 мл", "price": 450, "image": "/images/prod-bowl.png",    "ingredients": "ягоды, кокос, гранола", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "3.5 г", "fat": "5.0 г", "carbs": "22 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j4",  "title": "Апельсиновый сок", "volume": "500 мл", "price": 400, "image": "/images/cat-juice.png",    "ingredients": "апельсин, лёд", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.7 г", "fat": "0.2 г", "carbs": "10 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j5",  "title": "Смузи",            "volume": "500 мл", "price": 385, "image": "/images/cat-lassi.png",    "ingredients": "клубника, банан, апельсин", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "1.0 г", "fat": "0.4 г", "carbs": "15 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j6",  "title": "Детокс",           "volume": "500 мл", "price": 500, "image": "/images/cat-detox.png",    "ingredients": "груша, лайм, лимон", "bonus": 50,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.5 г", "fat": "0.1 г", "carbs": "12 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j7",  "title": "Доктор",           "volume": "500 мл", "price": 375, "image": "/images/cat-juice.png",    "ingredients": "апельсин, имбирь, лимон", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.6 г", "fat": "0.2 г", "carbs": "11 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j8",  "title": "Гранатовый сок",   "volume": "500 мл", "price": 500, "image": "/images/cat-lassi.png",    "ingredients": "гранат, лёд", "bonus": 20,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.4 г", "fat": "0.1 г", "carbs": "18 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j9",  "title": "Грин",             "volume": "500 мл", "price": 375, "image": "/images/prod-green.png",   "ingredients": "сельдерей, яблоко, шпинат, спирулина, лед", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.8 г", "fat": "0.3 г", "carbs": "9 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j10", "title": "Ласси",            "volume": "500 мл", "price": 375, "image": "/images/prod-lassi.png",   "ingredients": "манго, йогурт, апельсин", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "1.2 г", "fat": "2.0 г", "carbs": "14 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j11", "title": "Микс",             "volume": "500 мл", "price": 400, "image": "/images/prod-mix.png",     "ingredients": "морковь, апельсин, банан", "bonus": 20,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "0.9 г", "fat": "0.3 г", "carbs": "16 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" },
-    { "id": "j12", "title": "Боул",             "volume": "500 мл", "price": 450, "image": "/images/prod-bowl.png",    "ingredients": "ягоды, кокос, гранола", "bonus": 0,
-      "sizes": ["300 мл", "500 мл", "1 л"], "nutrition": { "protein": "3.5 г", "fat": "5.0 г", "carbs": "22 г" }, "shelfLife": "12 часов", "storage": "в холодильнике" }
+    {
+      "id": "j1",
+      "title": "Ласси",
+      "volume": "500 мл",
+      "price": 375,
+      "image": "/images/prod-lassi.png",
+      "ingredients": "манго, йогурт, апельсин",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "1.2 г",
+        "fat": "2.0 г",
+        "carbs": "14 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j2",
+      "title": "Микс",
+      "volume": "500 мл",
+      "price": 400,
+      "image": "/images/prod-mix.png",
+      "ingredients": "морковь, апельсин, банан",
+      "bonus": 20,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.9 г",
+        "fat": "0.3 г",
+        "carbs": "16 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j3",
+      "title": "Боул",
+      "volume": "500 мл",
+      "price": 450,
+      "image": "/images/prod-bowl.png",
+      "ingredients": "ягоды, кокос, гранола",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "3.5 г",
+        "fat": "5.0 г",
+        "carbs": "22 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j4",
+      "title": "Апельсиновый сок",
+      "volume": "500 мл",
+      "price": 400,
+      "image": "/images/cat-juice.png",
+      "ingredients": "апельсин, лёд",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.7 г",
+        "fat": "0.2 г",
+        "carbs": "10 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j5",
+      "title": "Смузи",
+      "volume": "500 мл",
+      "price": 385,
+      "image": "/images/cat-lassi.png",
+      "ingredients": "клубника, банан, апельсин",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "1.0 г",
+        "fat": "0.4 г",
+        "carbs": "15 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j6",
+      "title": "Детокс",
+      "volume": "500 мл",
+      "price": 500,
+      "image": "/images/cat-detox.png",
+      "ingredients": "груша, лайм, лимон",
+      "bonus": 50,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.5 г",
+        "fat": "0.1 г",
+        "carbs": "12 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j7",
+      "title": "Доктор",
+      "volume": "500 мл",
+      "price": 375,
+      "image": "/images/cat-juice.png",
+      "ingredients": "апельсин, имбирь, лимон",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.6 г",
+        "fat": "0.2 г",
+        "carbs": "11 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j8",
+      "title": "Гранатовый сок",
+      "volume": "500 мл",
+      "price": 500,
+      "image": "/images/cat-lassi.png",
+      "ingredients": "гранат, лёд",
+      "bonus": 20,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.4 г",
+        "fat": "0.1 г",
+        "carbs": "18 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j9",
+      "title": "Грин",
+      "volume": "500 мл",
+      "price": 375,
+      "image": "/images/prod-green.png",
+      "ingredients": "сельдерей, яблоко, шпинат, спирулина, лед",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.8 г",
+        "fat": "0.3 г",
+        "carbs": "9 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j10",
+      "title": "Ласси",
+      "volume": "500 мл",
+      "price": 375,
+      "image": "/images/prod-lassi.png",
+      "ingredients": "манго, йогурт, апельсин",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "1.2 г",
+        "fat": "2.0 г",
+        "carbs": "14 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j11",
+      "title": "Микс",
+      "volume": "500 мл",
+      "price": 400,
+      "image": "/images/prod-mix.png",
+      "ingredients": "морковь, апельсин, банан",
+      "bonus": 20,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "0.9 г",
+        "fat": "0.3 г",
+        "carbs": "16 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    },
+    {
+      "id": "j12",
+      "title": "Боул",
+      "volume": "500 мл",
+      "price": 450,
+      "image": "/images/prod-bowl.png",
+      "ingredients": "ягоды, кокос, гранола",
+      "bonus": 0,
+      "sizes": [
+        "300 мл",
+        "500 мл",
+        "1 л"
+      ],
+      "nutrition": {
+        "protein": "3.5 г",
+        "fat": "5.0 г",
+        "carbs": "22 г"
+      },
+      "shelfLife": "12 часов",
+      "storage": "в холодильнике"
+    }
   ],
   "paymentOptions": [
-    { "id": "cash",   "title": "Наличными", "description": "Оплата наличными курьеру или при получении заказа", "icon": "/images/pay-cash.png" },
-    { "id": "card",   "title": "Картой",    "description": "Оплата банковской картой курьеру или при получении заказа", "icon": "/images/pay-card.png" },
-    { "id": "online", "title": "Онлайн-оплата", "description": "Безопасный и удобный способ оплаты заказа на сайте", "icon": "/images/pay-online.png" }
+    {
+      "id": "cash",
+      "title": "Наличными",
+      "description": "Оплата наличными курьеру или при получении заказа",
+      "icon": "/images/pay-cash.png"
+    },
+    {
+      "id": "card",
+      "title": "Картой",
+      "description": "Оплата банковской картой курьеру или при получении заказа",
+      "icon": "/images/pay-card.png"
+    },
+    {
+      "id": "online",
+      "title": "Онлайн-оплата",
+      "description": "Безопасный и удобный способ оплаты заказа на сайте",
+      "icon": "/images/pay-online.png"
+    }
   ],
   "deliveryOptions": [
-    { "id": "courier", "title": "Курьером",   "description": "Вы оплачиваете только заказ, доставка — бесплатно", "icon": "/images/del-courier.png" },
-    { "id": "pickup",  "title": "Самовывоз", "description": "Можете сами забрать заказ, указав адрес при оформлении заказа", "icon": "/images/del-pickup.png" }
+    {
+      "id": "courier",
+      "title": "Курьером",
+      "description": "Вы оплачиваете только заказ, доставка — бесплатно",
+      "icon": "/images/del-courier.png"
+    },
+    {
+      "id": "pickup",
+      "title": "Самовывоз",
+      "description": "Можете сами забрать заказ, указав адрес при оформлении заказа",
+      "icon": "/images/del-pickup.png"
+    }
   ],
   "deliveryZones": [
-    { "id": "z1", "title": "Минимальная сумма заказа 500 руб.",  "color": "#FBBA1D" },
-    { "id": "z2", "title": "Минимальная сумма заказа 750 руб.",  "color": "#F08C2E" },
-    { "id": "z3", "title": "Минимальная сумма заказа 1000 руб.", "color": "#E8628E" }
+    {
+      "id": "z1",
+      "title": "Минимальная сумма заказа 500 руб.",
+      "color": "#FBBA1D"
+    },
+    {
+      "id": "z2",
+      "title": "Минимальная сумма заказа 750 руб.",
+      "color": "#F08C2E"
+    },
+    {
+      "id": "z3",
+      "title": "Минимальная сумма заказа 1000 руб.",
+      "color": "#E8628E"
+    }
   ],
   "loyaltyBenefits": [
-    { "id": "b1", "title": "Всегда рядом в вашем телефоне",        "icon": "/images/loy-phone.png" },
-    { "id": "b2", "title": "Участвуй в акциях и получай подарки",  "icon": "/images/loy-gift.png" },
-    { "id": "b3", "title": "Каждый 5-й напиток бесплатно",         "icon": "/images/loy-cup.png" }
+    {
+      "id": "b1",
+      "title": "Всегда рядом в вашем телефоне",
+      "icon": "/images/loy-phone.png"
+    },
+    {
+      "id": "b2",
+      "title": "Участвуй в акциях и получай подарки",
+      "icon": "/images/loy-gift.png"
+    },
+    {
+      "id": "b3",
+      "title": "Каждый 5-й напиток бесплатно",
+      "icon": "/images/loy-cup.png"
+    }
   ],
   "mainNav": [
-    { "id": "juice",    "title": "Соки",         "href": "#juice",    "color": "#F19013" },
-    { "id": "mix",      "title": "Миксы",        "href": "#mix",      "color": "#FECE3C" },
-    { "id": "smoothie", "title": "Смузи",        "href": "#smoothie", "color": "#EF89A7" },
-    { "id": "lassi",    "title": "Ласси",        "href": "#lassi",    "color": "#E4087E" },
-    { "id": "detox",    "title": "Детокс",       "href": "#detox",    "color": "#EE7E19" },
-    { "id": "bowl",     "title": "Боулы",        "href": "#bowl",     "color": "#AD4984" },
-    { "id": "salad",    "title": "Салаты",       "href": "#salad",    "color": "#009745" },
-    { "id": "healthy",  "title": "Здоровая еда", "href": "#healthy",  "color": "#7AB832" }
+    {
+      "id": "juice",
+      "title": "Соки",
+      "href": "#juice",
+      "color": "#F19013"
+    },
+    {
+      "id": "mix",
+      "title": "Миксы",
+      "href": "#mix",
+      "color": "#FECE3C"
+    },
+    {
+      "id": "smoothie",
+      "title": "Смузи",
+      "href": "#smoothie",
+      "color": "#EF89A7"
+    },
+    {
+      "id": "lassi",
+      "title": "Ласси",
+      "href": "#lassi",
+      "color": "#E4087E"
+    },
+    {
+      "id": "detox",
+      "title": "Детокс",
+      "href": "#detox",
+      "color": "#EE7E19"
+    },
+    {
+      "id": "bowl",
+      "title": "Боулы",
+      "href": "#bowl",
+      "color": "#AD4984"
+    },
+    {
+      "id": "salad",
+      "title": "Салаты",
+      "href": "#salad",
+      "color": "#009745"
+    },
+    {
+      "id": "healthy",
+      "title": "Здоровая еда",
+      "href": "#healthy",
+      "color": "#7AB832"
+    }
   ],
   "secondaryNav": [
-    { "id": "about",     "title": "О нас",     "href": "#about",     "color": "#2A2A2A" },
-    { "id": "franchise", "title": "Франшиза",  "href": "#franchise", "color": "#2A2A2A" },
-    { "id": "contacts",  "title": "Контакты",  "href": "#contacts",  "color": "#2A2A2A" },
-    { "id": "work",      "title": "Работа",    "href": "#work",      "color": "#2A2A2A" }
+    {
+      "id": "about",
+      "title": "О нас",
+      "href": "#about",
+      "color": "#2A2A2A"
+    },
+    {
+      "id": "franchise",
+      "title": "Франшиза",
+      "href": "#franchise",
+      "color": "#2A2A2A"
+    },
+    {
+      "id": "contacts",
+      "title": "Контакты",
+      "href": "#contacts",
+      "color": "#2A2A2A"
+    },
+    {
+      "id": "work",
+      "title": "Работа",
+      "href": "#work",
+      "color": "#2A2A2A"
+    }
   ],
   "regions": {
     "current": "Красноярск",
     "cities": [
-      "Волгоград", "Красноярск", "Пенза",
-      "Воронеж", "Москва", "Самара",
-      "Екатеринбург", "Нижний Новгород", "Санкт-Петербург",
-      "Казань", "Новосибирск", "Уфа"
+      "Волгоград",
+      "Красноярск",
+      "Пенза",
+      "Воронеж",
+      "Москва",
+      "Самара",
+      "Екатеринбург",
+      "Нижний Новгород",
+      "Санкт-Петербург",
+      "Казань",
+      "Новосибирск",
+      "Уфа"
     ]
   },
   "footer": {
@@ -156,21 +538,191 @@
     ],
     "links": [
       [
-        { "title": "Публичная оферта",            "href": "#offer" },
-        { "title": "Политика конфиденциальности", "href": "#privacy" }
+        {
+          "title": "Публичная оферта",
+          "href": "#offer"
+        },
+        {
+          "title": "Политика конфиденциальности",
+          "href": "#privacy"
+        }
       ],
       [
-        { "title": "Пользовательское соглашение", "href": "#terms" },
-        { "title": "Бонусная программа",          "href": "#bonus" }
+        {
+          "title": "Пользовательское соглашение",
+          "href": "#terms"
+        },
+        {
+          "title": "Бонусная программа",
+          "href": "#bonus"
+        }
       ]
     ]
   },
   "joinUs": {
     "title": "Присоединяйтесь к Vita Juice",
     "socials": [
-      { "id": "vk", "title": "VK",        "icon": "/images/social-vk.png", "url": "https://vk.com" },
-      { "id": "ig", "title": "Instagram", "icon": "/images/social-ig.png", "url": "https://instagram.com" },
-      { "id": "fb", "title": "Facebook",  "icon": "/images/social-fb.png", "url": "https://facebook.com" }
+      {
+        "id": "vk",
+        "title": "VK",
+        "icon": "/images/social-vk.png",
+        "url": "https://vk.com"
+      },
+      {
+        "id": "ig",
+        "title": "Instagram",
+        "icon": "/images/social-ig.png",
+        "url": "https://instagram.com"
+      },
+      {
+        "id": "fb",
+        "title": "Facebook",
+        "icon": "/images/social-fb.png",
+        "url": "https://facebook.com"
+      }
     ]
+  },
+  "account": {
+    "balance": 300,
+    "orders": [
+      {
+        "date": "14 апреля",
+        "total": 2345,
+        "items": [
+          {
+            "id": "h1-1",
+            "title": "Сок",
+            "volume": "0.5 л",
+            "price": 1000,
+            "bonus": 50,
+            "image": "/images/prod-green.png",
+            "ingredients": "Апельсин, морковь, имбирь"
+          },
+          {
+            "id": "h1-2",
+            "title": "Сок 2",
+            "volume": "0.5 л",
+            "price": 1005,
+            "bonus": 50,
+            "image": "/images/prod-green.png",
+            "ingredients": "Яблоко, сельдерей, шпинат"
+          },
+          {
+            "id": "h1-3",
+            "title": "Батончик",
+            "volume": "1 шт",
+            "price": 340,
+            "bonus": 15,
+            "image": "/images/prod-bowl.png",
+            "ingredients": "Орехи, финики, какао"
+          }
+        ]
+      },
+      {
+        "date": "3 апреля",
+        "total": 1500,
+        "items": [
+          {
+            "id": "h2-1",
+            "title": "Микс",
+            "volume": "0.5 л",
+            "price": 750,
+            "bonus": 35,
+            "image": "/images/prod-mix.png",
+            "ingredients": "Манго, маракуйя, банан"
+          },
+          {
+            "id": "h2-2",
+            "title": "Ласси",
+            "volume": "0.4 л",
+            "price": 750,
+            "bonus": 35,
+            "image": "/images/prod-lassi.png",
+            "ingredients": "Йогурт, клубника, мёд"
+          }
+        ]
+      },
+      {
+        "date": "6 марта",
+        "total": 3000,
+        "items": [
+          {
+            "id": "h3-1",
+            "title": "Боул",
+            "volume": "350 г",
+            "price": 1500,
+            "bonus": 70,
+            "image": "/images/prod-bowl.png",
+            "ingredients": "Гранола, банан, ягоды"
+          },
+          {
+            "id": "h3-2",
+            "title": "Смузи",
+            "volume": "0.5 л",
+            "price": 1500,
+            "bonus": 70,
+            "image": "/images/prod-mix.png",
+            "ingredients": "Авокадо, шпинат, киви"
+          }
+        ]
+      },
+      {
+        "date": "25 февраля",
+        "total": 2500,
+        "items": [
+          {
+            "id": "h4-1",
+            "title": "Детокс",
+            "volume": "0.5 л",
+            "price": 1250,
+            "bonus": 60,
+            "image": "/images/prod-green.png",
+            "ingredients": "Сельдерей, огурец, лайм"
+          },
+          {
+            "id": "h4-2",
+            "title": "Сок",
+            "volume": "0.5 л",
+            "price": 1250,
+            "bonus": 60,
+            "image": "/images/prod-green.png",
+            "ingredients": "Грейпфрут, апельсин"
+          }
+        ]
+      },
+      {
+        "date": "16 февраля",
+        "total": 2340,
+        "items": [
+          {
+            "id": "h5-1",
+            "title": "Ласси",
+            "volume": "0.4 л",
+            "price": 1170,
+            "bonus": 55,
+            "image": "/images/prod-lassi.png",
+            "ingredients": "Манго, йогурт, кардамон"
+          },
+          {
+            "id": "h5-2",
+            "title": "Микс",
+            "volume": "0.5 л",
+            "price": 1170,
+            "bonus": 55,
+            "image": "/images/prod-mix.png",
+            "ingredients": "Ягодный микс, мята"
+          }
+        ]
+      }
+    ]
+  },
+  "franchise": {
+    "title": "Наша франшиза",
+    "image": "/images/franchise-fruits.png",
+    "paragraphs": [
+      "Конечно, идея продавать свежевыжатые соки в торговых центрах не нова. В России их любят и пьют. Аудитория у этого продукта широкая – от мам с детьми до брутальных молодых людей. Каждый из нас видел в ТРЦ довольно много торговых точек с соками, но почти всегда это no name бренды с незамысловатым дизайном и без стандартов приготовления продукции.",
+      "Мы по-новому взглянули на концепцию подачи самих соков: расширили ассортимент предлагаемых продуктов, разработали стандарты для сотрудников, фирменную упаковку и рекламные материалы, поддерживаем активность в социальных сетях. Мы превратили обычный остров с соками в полноценный бренд."
+    ],
+    "cta": "Подробнее"
   }
 }

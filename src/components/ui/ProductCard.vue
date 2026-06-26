@@ -1,49 +1,52 @@
 <script setup>
 import BaseButton from './BaseButton.vue'
+import HeartButton from './HeartButton.vue'
+import { useCart } from '../../composables/useCart.js'
 
 /**
  * ProductCard — a single product card for the best-sellers slider
- * and any future catalogue grid.
+ * (and any future catalogue grid).
  *
- * Shows:
- *   - product image (centered)
- *   - optional yellow "+20 б" bonus badge top-right of the image
- *   - title and volume
- *   - price + heart (wishlist toggle)
- *   - "В корзину" yellow button
+ * Now fully functional, mirroring JuiceCard on the СОКИ page:
+ *   - the heart toggles the product in favorites (shared store)
+ *   - «В корзину» adds the product and opens the cart popup
+ *
+ * Accepts the whole product object so it has everything the cart
+ * needs (id, title, volume, price, image, bonus, ...).
  */
-defineProps({
-  title:  { type: String, required: true },
-  image:  { type: String, required: true },
-  volume: { type: String, default: '' },
-  price:  { type: [Number, String], required: true },
-  bonus:  { type: Boolean, default: false }
+const props = defineProps({
+  product: { type: Object, required: true }
 })
+
+const cart = useCart()
+
+function addToCart() {
+  cart.add(props.product)
+  cart.open()
+}
 </script>
 
 <template>
   <article class="product-card">
     <div class="product-card__media">
-      <img :src="image" :alt="title" class="product-card__img" />
+      <img :src="product.image" :alt="product.title" class="product-card__img" />
       <img
-        v-if="bonus"
+        v-if="product.bonus"
         src="/images/bonuses.png"
         alt="Бонусные баллы"
         class="product-card__bonus"
       />
     </div>
 
-    <h3 class="product-card__title">{{ title }}</h3>
-    <p class="product-card__volume">{{ volume }}</p>
+    <h3 class="product-card__title">{{ product.title }}</h3>
+    <p class="product-card__volume">{{ product.volume }}</p>
 
     <div class="product-card__price-row">
-      <span class="product-card__price">{{ price }}<span class="product-card__price-currency">₽</span></span>
-      <button class="product-card__heart" type="button" aria-label="В избранное">
-        <img src="/images/heart.png" alt="" />
-      </button>
+      <span class="product-card__price">{{ product.price }}<span class="product-card__price-currency">₽</span></span>
+      <HeartButton :product-id="product.id" :size="22" />
     </div>
 
-    <BaseButton variant="primary" size="md" class="product-card__cta">В корзину</BaseButton>
+    <BaseButton variant="primary" size="md" class="product-card__cta" @click="addToCart">В корзину</BaseButton>
   </article>
 </template>
 
@@ -110,16 +113,6 @@ defineProps({
   color: var(--color-text);
 }
 .product-card__price-currency { font-weight: 800; }
-.product-card__heart {
-  width: 26px;
-  height: 26px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform var(--t-fast);
-}
-.product-card__heart:hover { transform: scale(1.15); }
-.product-card__heart img { width: 18px; height: 18px; }
 
 /* ----- CTA ----- */
 .product-card__cta { margin-top: auto; }

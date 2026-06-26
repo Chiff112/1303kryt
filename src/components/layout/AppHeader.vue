@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useContent } from '../../composables/useContent.js'
 import { useCart } from '../../composables/useCart.js'
+import { useAuth } from '../../composables/useAuth.js'
 import LogoMark from '../ui/LogoMark.vue'
 import LoginModal from '../ui/LoginModal.vue'
 import RegionModal from '../ui/RegionModal.vue'
@@ -38,11 +39,16 @@ const currentRegion = computed(() => data.value?.regions?.current ?? 'Ваш р�
 const selectedRegion = ref(null)
 const regionLabel = computed(() => selectedRegion.value || 'Ваш регион')
 
-const userName = ref(null) // null = not logged in
+const userName = computed(() => auth.displayName.value) // null = not logged in
 
 // Shared cart store
 const cart = useCart()
+// Shared auth store
+const auth = useAuth()
 
+const props = defineProps({
+  activeView: { type: String, default: 'home' }
+})
 const emit = defineEmits(['navigate'])
 
 function onRegionSelect(city) { selectedRegion.value = city }
@@ -51,14 +57,24 @@ function openRegion() { showRegion.value = true; closeDrawer() }
 function goJuices()   { emit('navigate', 'juices'); closeDrawer() }
 function goHome()     { emit('navigate', 'home');   closeDrawer() }
 function goCart()     { emit('navigate', 'cart');   closeDrawer() }
+function goFranchise(){ emit('navigate', 'franchise'); closeDrawer() }
+
+// Click on the user chip: logged in → personal area, otherwise login.
+function onUserClick() {
+  if (auth.isLoggedIn.value) { emit('navigate', 'account'); closeDrawer() }
+  else openLogin()
+}
+// After a successful login, go straight to the personal area.
+function onLoginSuccess() { emit('navigate', 'account') }
 </script>
 
 <template>
   <header class="header">
     <div class="header__inner container">
-      <!-- Logo (LogoMark renders its own link) -->
+      <!-- Logo (LogoMark renders its own link) — straddles the header
+           edge, hanging halfway over the section below. -->
       <div class="header__logo" @click="goHome">
-        <LogoMark :size="84" />
+        <LogoMark :size="120" />
       </div>
 
       <!-- ============= DESKTOP LAYOUT ============= -->
@@ -87,12 +103,9 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
               <span v-if="cart.count.value" class="header__cart-sum">{{ cart.totalPrice.value }}₽</span>
             </button>
 
-            <button class="header__chip" type="button" @click="openLogin">
+            <button class="header__chip" :class="{ 'is-active': props.activeView === 'account' }" type="button" @click="onUserClick">
               <span>{{ userName || 'Войти' }}</span>
-              <svg class="header__login-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
+              <img src="/images/sun.png" alt="" class="header__sun-icon" />
             </button>
           </div>
         </div>
@@ -115,7 +128,13 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
             <li class="header__nav-spacer" aria-hidden="true"></li>
 
             <li v-for="item in secondaryNav" :key="item.id" class="header__nav-item">
-              <a :href="item.href" class="header__nav-link header__nav-link--secondary" :style="{ '--dot': item.color }">
+              <a
+                :href="item.href"
+                class="header__nav-link header__nav-link--secondary"
+                :class="{ 'is-active': props.activeView === item.id }"
+                :style="{ '--dot': item.color }"
+                @click.prevent="item.id === 'franchise' ? goFranchise() : null"
+              >
                 <span class="header__nav-text">{{ item.title }}</span>
                 <span class="header__dot"></span>
               </a>
@@ -179,12 +198,16 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
             <p class="drawer__group-title">О компании</p>
             <ul>
               <li v-for="item in secondaryNav" :key="item.id">
-                <a :href="item.href" class="drawer__link" @click="closeDrawer">{{ item.title }}</a>
+                <a
+                  :href="item.href"
+                  class="drawer__link"
+                  @click="item.id === 'franchise' ? goFranchise() : closeDrawer()"
+                >{{ item.title }}</a>
               </li>
             </ul>
           </nav>
 
-          <button class="drawer__login" @click="openLogin">
+          <button class="drawer__login" @click="onUserClick">
             <span>{{ userName || 'Войти' }}</span>
           </button>
         </div>
@@ -192,7 +215,7 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
     </transition>
 
     <!-- ============= MODALS ============= -->
-    <LoginModal v-if="showLogin" @close="showLogin = false" />
+    <LoginModal v-if="showLogin" @close="showLogin = false" @success="onLoginSuccess" />
     <RegionModal v-if="showRegion" @close="showRegion = false" @select="onRegionSelect" />
   </header>
 </template>
@@ -204,6 +227,7 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
   z-index: 50;
   background: #fff;
   box-shadow: var(--shadow-sm);
+  overflow: visible;
 }
 .header__inner {
   display: flex;
@@ -214,8 +238,11 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
 }
 .header__logo {
   flex: 0 0 auto;
-  display: flex;
-  align-items: center;
+  align-self: flex-start;       /* opt out of stretch */
+  line-height: 0;
+  margin-bottom: -46px;         /* lets the lower half hang below the header */
+  position: relative;
+  z-index: 60;
   cursor: pointer;
 }
 
@@ -259,8 +286,8 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
 .header__chip--region { color: var(--color-text-muted); }
 .header__chip-pin     { width: 14px; height: 18px; object-fit: contain; }
 .header__chip-chevron { width: 11px; height: 10px; object-fit: contain; opacity: 0.6; }
-.header__cart-icon,
-.header__login-icon   { color: currentColor; }
+.header__cart-icon   { color: currentColor; }
+.header__sun-icon    { width: 22px; height: 22px; object-fit: contain; }
 .header__cart-sum {
   font-weight: 800;
   color: var(--color-yellow-dark);
@@ -311,6 +338,8 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
 }
 /* secondary links: text turns to its (dark) dot color, dot fills dark */
 .header__nav-link--secondary:hover .header__nav-text { color: var(--dot); }
+.header__nav-link--secondary.is-active .header__dot { background: var(--dot); }
+.header__nav-link--secondary.is-active .header__nav-text { color: var(--dot); }
 
 /* ---------- Mobile actions ---------- */
 .header__mobile-actions { display: none; }
@@ -368,6 +397,8 @@ function goCart()     { emit('navigate', 'cart');   closeDrawer() }
 }
 @media (max-width: 1023px) {
   .header__content        { display: none; }
+  .header__logo :deep(.logo-mark) { width: 78px !important; height: 78px !important; }
+  .header__logo { margin-bottom: -28px; }
   .header__mobile-actions {
     display: flex;
     align-items: center;

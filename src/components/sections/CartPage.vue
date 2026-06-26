@@ -2,7 +2,6 @@
 import { ref, reactive, computed } from 'vue'
 import { useCart } from '../../composables/useCart.js'
 import BaseButton from '../ui/BaseButton.vue'
-import OrderSuccess from './OrderSuccess.vue'
 
 /**
  * CartPage — full-page checkout flow with a 3-step green stepper:
@@ -65,9 +64,6 @@ const paymentErrors = computed(() => ({
   code:  paymentTried.value && codeSent.value && !payment.code.trim()
 }))
 const paid = ref(false)
-// Bonus credited for the order — captured before the cart is cleared
-// so the success screen can still display it.
-const earnedBonus = ref(0)
 
 function sendCode() {
   paymentTried.value = true
@@ -78,7 +74,6 @@ function sendCode() {
 function pay() {
   paymentTried.value = true
   if (!payment.phone.trim() || !payment.name.trim() || !payment.code.trim()) return
-  earnedBonus.value = cart.totalBonus.value
   paid.value = true
   cart.clear()
 }
@@ -101,7 +96,7 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
           v-for="(s, i) in STEPS"
           :key="s"
           class="stepper__tab"
-          :class="{ 'is-active': step === s && !paid }"
+          :class="{ 'is-active': step === s }"
           type="button"
           @click="goStep(s)"
         >{{ ['Корзина', 'Оформление', 'Оплата'][i] }}</button>
@@ -243,7 +238,11 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
 
       <!-- ================= STEP 3: PAYMENT ================= -->
       <template v-else-if="step === 'payment'">
-        <OrderSuccess v-if="paid" :bonus="earnedBonus" />
+        <div v-if="paid" class="cart-page__done">
+          <h2>Заказ оплачен 🎉</h2>
+          <p>Спасибо! Мы уже готовим ваш заказ.</p>
+          <BaseButton variant="primary" size="md" @click="emit('home')">На главную</BaseButton>
+        </div>
 
         <template v-else>
           <!-- Order summary -->
@@ -340,8 +339,9 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
 
 .cart-page__body { padding-bottom: 48px; }
 
-/* ---------- Empty ---------- */
-.cart-page__empty {
+/* ---------- Empty / done ---------- */
+.cart-page__empty,
+.cart-page__done {
   text-align: center;
   padding: 60px 20px;
   display: flex;
@@ -349,12 +349,14 @@ const finalTotal = computed(() => cart.grandTotal.value - bonusToUse.value)
   align-items: center;
   gap: 16px;
 }
-.cart-page__empty p {
+.cart-page__empty p,
+.cart-page__done h2 {
   font-size: 22px;
   font-weight: 800;
   text-transform: uppercase;
   margin: 0;
 }
+.cart-page__done p { color: var(--color-text-muted); margin: 0; }
 
 /* ---------- Cart line ---------- */
 .cart-line {

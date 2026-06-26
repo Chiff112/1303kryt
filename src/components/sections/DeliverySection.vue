@@ -30,8 +30,10 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   <section class="delivery" id="delivery">
     <div class="container">
       <SectionTitle>Доставка и оплата</SectionTitle>
+    </div>
 
-      <div class="delivery__panel">
+    <div class="delivery__panel">
+      <div class="delivery__panel-inner container">
         <!-- ============ LEFT: info ============ -->
         <div class="delivery__info">
           <h3 class="delivery__heading">Зона доставки</h3>
@@ -99,13 +101,16 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
   background-size: cover;
   background-position: center;
   background-color: var(--color-green); /* fallback */
-  border-radius: var(--radius-md);
-  padding: 32px;
+  overflow: hidden;
+}
+.delivery__panel-inner {
+  position: relative;
+  padding-top: 32px;
+  padding-bottom: 32px;
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 32px;
   align-items: stretch;
-  overflow: hidden;
 }
 
 /* ============ Left column ============ */
@@ -201,10 +206,11 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
    Responsive
    ======================================================== */
 @media (max-width: 1023px) {
-  .delivery__panel {
+  .delivery__panel-inner {
     grid-template-columns: 1fr;
     gap: 24px;
-    padding: 24px;
+    padding-top: 24px;
+    padding-bottom: 24px;
   }
   .delivery__hero        { min-height: 380px; order: -1; }
   .delivery__hero-img    { max-height: 380px; margin-bottom: -24px; }

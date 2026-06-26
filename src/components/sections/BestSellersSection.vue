@@ -94,13 +94,7 @@ onBeforeUnmount(() => {
               class="best-sellers__cell"
               :style="cardStyle"
             >
-              <ProductCard
-                :title="product.title"
-                :image="product.image"
-                :volume="product.volume"
-                :price="product.price"
-                :bonus="product.bonus"
-              />
+              <ProductCard :product="product" />
             </div>
           </div>
         </div>

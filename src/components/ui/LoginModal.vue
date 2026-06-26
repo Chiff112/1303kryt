@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import BaseButton from './BaseButton.vue'
+import { useAuth } from '../../composables/useAuth.js'
 
 /**
  * LoginModal — "ВХОД НА САЙТ".
@@ -16,7 +17,9 @@ import BaseButton from './BaseButton.vue'
  * Emits `close` when the user dismisses it.
  */
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'success'])
+
+const auth = useAuth()
 
 const name  = ref('')
 const phone = ref('')
@@ -24,6 +27,7 @@ const code  = ref('')
 
 const codeSent = ref(false)   // false = phase 1, true = phase 2
 const triedSubmit = ref(false)
+const authError = ref('')     // server-side style error (wrong phone/code)
 
 const nameError  = computed(() => triedSubmit.value && !name.value.trim())
 const phoneError = computed(() => triedSubmit.value && !phone.value.trim())
@@ -34,12 +38,18 @@ function sendCode() {
   if (!name.value.trim() || !phone.value.trim()) return
   codeSent.value = true
   triedSubmit.value = false
+  authError.value = ''
 }
 
 function submit() {
   triedSubmit.value = true
   if (!code.value.trim()) return
-  // In a real app this would authenticate; here we just close.
+  const res = auth.login(phone.value, code.value)
+  if (!res.ok) {
+    authError.value = res.message
+    return
+  }
+  emit('success')
   emit('close')
 }
 
@@ -120,6 +130,7 @@ function close() { emit('close') }
               <span v-if="codeError" class="login-field__error">Пожалуйста введите код из sms</span>
             </div>
           </div>
+          <p v-if="authError" class="login-modal__auth-error">{{ authError }}</p>
           <div class="login-modal__submit">
             <BaseButton variant="primary" size="md" @click="submit">Войти</BaseButton>
           </div>
@@ -249,6 +260,12 @@ function close() { emit('close') }
 .login-modal__submit {
   display: flex;
   justify-content: flex-end;
+}
+.login-modal__auth-error {
+  color: var(--color-red);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px;
 }
 
 @media (max-width: 480px) {

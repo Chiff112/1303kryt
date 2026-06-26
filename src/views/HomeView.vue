@@ -10,14 +10,18 @@ import DeliverySection    from '../components/sections/DeliverySection.vue'
 import LoyaltySection     from '../components/sections/LoyaltySection.vue'
 import JuicesSection      from '../components/sections/JuicesSection.vue'
 import CartPage           from '../components/sections/CartPage.vue'
+import AccountPage        from '../components/sections/AccountPage.vue'
+import FranchiseSection   from '../components/sections/FranchiseSection.vue'
 import SectionDivider     from '../components/ui/SectionDivider.vue'
 import CartPopup          from '../components/ui/CartPopup.vue'
 
 /**
  * HomeView — top-level page with a lightweight `view` switch between:
- *   - 'home'   : the landing page
- *   - 'juices' : the СОКИ category page
- *   - 'cart'   : the full КОРЗИНА → ОФОРМЛЕНИЕ → ОПЛАТА checkout flow
+ *   - 'home'      : the landing page
+ *   - 'juices'    : the СОКИ category page
+ *   - 'cart'      : the full КОРЗИНА -> ОФОРМЛЕНИЕ -> ОПЛАТА checkout flow
+ *   - 'account'   : the personal area (profile / order history / balance)
+ *   - 'franchise' : the «Наша франшиза» page
  *
  * No router is used, keeping the project within the "no extra
  * frameworks" rule. The header and footer emit `navigate`.
@@ -32,7 +36,7 @@ function navigate(target) {
 
 <template>
   <div id="top" class="home">
-    <AppHeader @navigate="navigate" />
+    <AppHeader :active-view="view" @navigate="navigate" />
 
     <!-- Landing page -->
     <main v-if="view === 'home'">
@@ -62,6 +66,18 @@ function navigate(target) {
     <!-- Full cart / checkout flow -->
     <main v-else-if="view === 'cart'">
       <CartPage @home="navigate('home')" />
+      <SectionDivider />
+    </main>
+
+    <!-- Personal area -->
+    <main v-else-if="view === 'account'">
+      <AccountPage @home="navigate('home')" @cart="navigate('cart')" />
+      <SectionDivider />
+    </main>
+
+    <!-- Franchise page -->
+    <main v-else-if="view === 'franchise'">
+      <FranchiseSection />
       <SectionDivider />
     </main>
 
