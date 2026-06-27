@@ -1,14 +1,15 @@
 # Vita Juice - Vue 3 + Router|Pinia
 
-Лендинг сети фреш-баров «Vita Juice».
-Стэк: **Vue 3 + Vite**, без сторонних UI-фреймворков и внешних API.
+Фреш-бар Vita Juice.
+Стэк: **Vue 3 + Vite**, без сторонних UI-фреймворков и внешних API точно.
 
 ## Запуск
 
-cmd 
+
+```cmd 
 npm install
 npm run dev
-
+```
 ## Сборка
 
 ```bash
