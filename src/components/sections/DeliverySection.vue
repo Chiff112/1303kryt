@@ -209,13 +209,38 @@ const ships    = computed(() => data.value?.deliveryOptions  ?? [])
 
 @media (max-width: 640px) {
   .delivery { padding: 40px 0; }
-  .delivery__options--3 { grid-template-columns: 1fr; gap: 12px; }
-  .delivery__options--2 { grid-template-columns: 1fr; gap: 12px; }
-  .delivery__zones      { gap: 6px 14px; }
-  .delivery__hero-img   { max-height: 300px; }
-  .delivery__bubble {
-    width: 160px;
-    left: 0;
+
+  /* Заголовки по центру */
+  .delivery__heading { text-align: center; }
+
+  /* Легенда зон: кружок над текстом, всё по центру, в столбик */
+  .delivery__zones {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
   }
+  .delivery__zone {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    max-width: none;
+    font-size: 13px;
+  }
+  .delivery__zone-dot { width: 20px; height: 20px; }
+
+  /* Плитки оплаты и доставки: иконка сверху, всё по центру */
+  .delivery__options--3,
+  .delivery__options--2 { grid-template-columns: 1fr; gap: 18px; }
+  .delivery__options :deep(.info-tile) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .delivery__options :deep(.info-tile__title) { font-size: 15px; }
+  .delivery__options :deep(.info-tile__desc)  { font-size: 12px; }
+
+  .delivery__hero-img { max-height: 300px; }
+  .delivery__bubble { width: 160px; left: 0; }
 }
 </style>

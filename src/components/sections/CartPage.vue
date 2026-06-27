@@ -608,6 +608,11 @@ const finalTotal = computed(() => cart.grandTotal - bonusToUse.value)
   .pay-form { grid-template-columns: 1fr; gap: 20px; }
 }
 @media (max-width: 600px) {
+  /* На телефоне в плашке показываем только текущий шаг, по центру */
+  .stepper__inner { justify-content: center; }
+  .stepper__tab:not(.is-active) { display: none; }
+  .stepper__tab { font-size: 30px; }
+
   .cart-line { gap: 14px; padding: 20px 0; }
   .cart-line__img { width: 90px; height: 110px; }
   .cart-line__title { font-size: 18px; }

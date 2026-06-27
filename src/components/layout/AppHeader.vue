@@ -137,26 +137,35 @@ function onLoginSuccess() { router.push('/account') }
         </nav>
       </div>
 
-      <!-- ============= ТЕЛЕФОН: корзина и бургер ============= -->
+      <!-- ============= ТЕЛЕФОН: слева «☰ Меню» ============= -->
+      <button
+        class="header__mobile-menu"
+        type="button"
+        :aria-expanded="drawerOpen"
+        aria-label="Меню"
+        @click="toggleDrawer"
+      >
+        <span :class="['header__burger-bars', { 'is-open': drawerOpen }]">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="header__mobile-menu-text">Меню</span>
+      </button>
+
+      <!-- ============= ТЕЛЕФОН: справа регион, корзина, вход ============= -->
       <div class="header__mobile-actions">
+        <button class="header__mobile-icon" type="button" aria-label="Регион" @click="openRegion">
+          <img src="/images/pin.png" alt="" />
+        </button>
         <button class="header__mobile-cart" type="button" aria-label="Корзина" @click="goCart">
-          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
             <path d="M3 4h2l2.4 12.3a1 1 0 0 0 1 .7h9.2a1 1 0 0 0 1-.8L21 8H6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
             <circle cx="18" cy="20" r="1.4" fill="currentColor"/>
           </svg>
           <span v-if="cart.count" class="header__mobile-cart-badge">{{ cart.count }}</span>
         </button>
-        <button
-          class="header__burger"
-          type="button"
-          :aria-expanded="drawerOpen"
-          aria-label="Открыть меню"
-          @click="toggleDrawer"
-        >
-          <span :class="['header__burger-bars', { 'is-open': drawerOpen }]">
-            <span></span><span></span><span></span>
-          </span>
+        <button class="header__mobile-icon" type="button" aria-label="Войти" @click="onUserClick">
+          <img src="/images/sun.png" alt="" />
         </button>
       </div>
     </div>
@@ -336,10 +345,25 @@ function onLoginSuccess() { router.push('/account') }
 .header__nav-link--secondary.is-active .header__nav-text { color: var(--dot); }
 
 /* ---------- Кнопки для телефона ---------- */
+/* По умолчанию (на компьютере) мобильные кнопки спрятаны. */
+.header__mobile-menu { display: none; align-items: center; gap: 10px; }
+.header__mobile-menu-text {
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text);
+}
 .header__mobile-actions { display: none; }
+.header__mobile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.header__mobile-icon img { width: 24px; height: 24px; object-fit: contain; }
 .header__mobile-cart {
   position: relative;
-  color: var(--color-text);
+  color: var(--color-yellow);   /* корзина жёлтая, как на макете */
 }
 .header__mobile-cart-badge {
   position: absolute;
@@ -390,16 +414,11 @@ function onLoginSuccess() { router.push('/account') }
   .header__actions  { gap: 18px; }
 }
 @media (max-width: 1023px) {
-  .header__content        { display: none; }
-  .header__logo :deep(.logo-mark) { width: 78px !important; height: 78px !important; }
-  .header__logo { margin-bottom: -28px; }
-  .header__mobile-actions {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-left: auto;
-  }
-  .header__inner { gap: 12px; align-items: center; }
+  .header__content { display: none; }
+  .header__logo    { display: none; }   /* на телефоне логотип убираем */
+  .header__mobile-menu    { display: flex; }
+  .header__mobile-actions { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+  .header__inner { gap: 12px; align-items: center; padding-top: 12px; padding-bottom: 12px; }
 }
 
 /* ---------- Выезжающее меню ---------- */

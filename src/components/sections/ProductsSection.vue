@@ -166,16 +166,12 @@ const categories = computed(() => data.value?.categories ?? [])
 
 @media (max-width: 600px) {
   .products { padding: 40px 0; }
-  .products__girl-img { max-width: 78%; }
-  .products__bubble {
-    top: 6%;
-    left: 54%;
-    width: 150px;
-  }
+  /* На телефоне девушку и облако прячем — оставляем только кружки */
+  .products__girl { display: none; }
   .products__grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px 12px;
-    padding: 0 16px 24px;
+    gap: 24px 12px;
+    padding: 32px 16px;
   }
 }
 </style>

@@ -139,8 +139,12 @@ const benefits = computed(() => data.value?.loyaltyBenefits ?? [])
   .loyalty__card { max-width: 320px; }
 }
 
-@media (max-width: 480px) {
-  .loyalty       { padding: 40px 0; }
-  .loyalty__cta  { gap: 12px; }
+@media (max-width: 640px) {
+  .loyalty { padding: 40px 0; }
+  /* Всё содержимое по центру, как на макете */
+  .loyalty__content  { align-items: center; text-align: center; }
+  .loyalty__benefit  { flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+  .loyalty__benefit-icon { width: 44px; height: 44px; }
+  .loyalty__cta      { flex-direction: column; justify-content: center; gap: 12px; }
 }
 </style>

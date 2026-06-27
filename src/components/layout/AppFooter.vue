@@ -129,4 +129,9 @@ const router = useRouter()
   }
   .app-footer__links { padding-top: 0; }
 }
+/* На телефоне весь подвал по центру, как на макете */
+@media (max-width: 640px) {
+  .app-footer__grid { text-align: center; }
+  .app-footer__links { align-items: center; }
+}
 </style>

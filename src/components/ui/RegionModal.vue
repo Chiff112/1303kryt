@@ -154,4 +154,8 @@ function close() { emit('close') }
 @media (max-width: 520px) {
   .region-modal__cities { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 380px) {
+  /* На узком телефоне города в один столбец, как на макете */
+  .region-modal__cities { grid-template-columns: 1fr; }
+}
 </style>
